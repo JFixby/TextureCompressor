@@ -117,6 +117,7 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
 
 	outputAtlas.gdx_atlas_file_name = atlasFile.getName();
 	outputAtlas.compression_method = ETC1Compressor.ETC1AtlasCompression;
+	outputAtlas.alpha_channes_are_zip_compressed = useZip;
 
 	outputAtlasFile.writeString(Json.serializeToString(outputAtlas));
 	result.setCompressedAtlasFile(outputAtlasFile);

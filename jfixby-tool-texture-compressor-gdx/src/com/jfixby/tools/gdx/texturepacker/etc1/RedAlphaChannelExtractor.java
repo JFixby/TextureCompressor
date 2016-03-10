@@ -1,9 +1,10 @@
 
 package com.jfixby.tools.gdx.texturepacker.etc1;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -20,7 +21,7 @@ import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
 class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 
     private Color transparentColor;
-    final ArrayList<RedAlphaInfoPage> pages = new ArrayList<RedAlphaInfoPage>();
+    final Pages pages = new Pages();
     private boolean zip;
 
     public RedAlphaChannelExtractor(AlphaChannelExtractorSpecs alphaExtractorSpecs) {
@@ -50,7 +51,7 @@ class RedAlphaChannelExtractor implements AlphaChannelExtractor {
     }
 
     public void beginFile(String newPageFileName, int w, int h) {
-	RedAlphaInfoPage newPage = new RedAlphaInfoPage(newPageFileName, w, h);
+	Page newPage = new Page(newPageFileName, w, h);
 	pages.add(newPage);
     }
 
@@ -64,8 +65,9 @@ class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 
     public byte[] toByteArray() throws IOException {
 	ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	this.writeInt(buffer, pages.size());
 	for (int i = 0; i < pages.size(); i++) {
-	    writePage(buffer, pages.get(i));
+	    Page.writePage(buffer, pages.get(i));
 	}
 	buffer.flush();
 	buffer.close();
@@ -77,22 +79,65 @@ class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 
     }
 
-    public static RedAlphaChannelExtractor deserialize(byte[] alphas_bytes) {
-	throw new Error();
+    public static Pages deserialize(byte[] alphas_bytes, boolean zip) throws IOException {
+
+	if (zip) {
+	    alphas_bytes = unZIP(alphas_bytes);
+	}
+
+	ByteArrayInputStream input = new ByteArrayInputStream(alphas_bytes);
+	Pages pages = new Pages();
+	int pagesNumber = readInt(input);
+	for (int i = 0; i < pagesNumber; i++) {
+	    Page page = Page.readPage(input);
+	    pages.add(page);
+	}
+	return pages;
+
+    }
+
+    private static byte[] unZIP(byte[] alphas_bytes) throws IOException {
+	ByteArrayInputStream input = new ByteArrayInputStream(alphas_bytes);
+	int len = readInt(input);
+	GZIPInputStream zip = new GZIPInputStream(input);
+	byte[] buf = new byte[len];
+	zip.read(buf, 0, len);
+	return buf;
+    }
+
+    private static int readInt(ByteArrayInputStream input) {
+	final int b0 = readByte(input);
+	final int b1 = readByte(input);
+	final int b2 = readByte(input);
+	final int b3 = readByte(input);
+	final int result = (b0 << 8 * 3) | (b1 << 8 * 2) | (b2 << 8 * 1) | (b3 << 8 * 0);
+	return result;
+    }
+
+    private static int readByte(ByteArrayInputStream input) {
+	return input.read();
+    }
+
+    private void writeInt(ByteArrayOutputStream buffer, int value) {
+	final int b0 = (value >> 8 * 3) & 0xff;
+	final int b1 = (value >> 8 * 2) & 0xff;
+	final int b2 = (value >> 8 * 1) & 0xff;
+	final int b3 = (value >> 8 * 0) & 0xff;
+	buffer.write(b0);
+	buffer.write(b1);
+	buffer.write(b2);
+	buffer.write(b3);
     }
 
     private byte[] compressZIP(byte[] bytes) throws IOException {
 	ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	writeInt(buffer, bytes.length);
 	GZIPOutputStream zip = new GZIPOutputStream(buffer);
 	zip.write(bytes);
 	zip.flush();
 	zip.close();
 	buffer.close();
 	return buffer.toByteArray();
-    }
-
-    private void writePage(ByteArrayOutputStream buffer, RedAlphaInfoPage alphaInfoPage) throws IOException {
-	alphaInfoPage.writeTo(buffer);
     }
 
     @Override

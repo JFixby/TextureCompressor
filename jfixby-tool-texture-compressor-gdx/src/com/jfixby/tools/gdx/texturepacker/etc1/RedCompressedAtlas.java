@@ -7,6 +7,7 @@ import com.jfixby.cmns.adopted.gdx.fs.ToGdxFileAdaptor;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.CompressedAtlasDescriptor;
 
 public class RedCompressedAtlas {
@@ -27,6 +28,7 @@ public class RedCompressedAtlas {
 		descriptor.alpha_channes_file_name);
 	alpha_channes_file_name = Debug.checkNull("descriptor.alpha_channes_file_name",
 		descriptor.alpha_channes_file_name);
+	zip = descriptor.alpha_channes_are_zip_compressed;
     }
 
     public TextureAtlas getGdxAtlas() {
@@ -39,6 +41,8 @@ public class RedCompressedAtlas {
 
     private TextureAtlas gdx_atlas;
 
+    private boolean zip;
+
     public void load() throws IOException {
 	if (loaded) {
 	    Err.reportError("This atlas is already loaded: " + this.descriptorFile);
@@ -50,7 +54,8 @@ public class RedCompressedAtlas {
 	File alphas_file = descriptorFile.parent().child(alpha_channes_file_name);
 	byte[] alphas_bytes = alphas_file.readBytes();
 
-	RedAlphaChannelExtractor extractor = RedAlphaChannelExtractor.deserialize(alphas_bytes);
+	Pages pages = RedAlphaChannelExtractor.deserialize(alphas_bytes, zip);
+	L.d(pages);
 
 	loaded = true;
     }
