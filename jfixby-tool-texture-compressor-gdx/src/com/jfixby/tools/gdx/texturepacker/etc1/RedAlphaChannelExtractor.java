@@ -17,7 +17,7 @@ import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionSetting
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractor;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
 
- class RedAlphaChannelExtractor implements AlphaChannelExtractor {
+class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 
     private Color transparentColor;
     final ArrayList<RedAlphaInfoPage> pages = new ArrayList<RedAlphaInfoPage>();
@@ -75,6 +75,10 @@ import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
 	}
 	return bytes;
 
+    }
+
+    public static RedAlphaChannelExtractor deserialize(byte[] alphas_bytes) {
+	throw new Error();
     }
 
     private byte[] compressZIP(byte[] bytes) throws IOException {
