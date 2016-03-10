@@ -5,7 +5,9 @@ import java.io.IOException;
 import com.jfixby.cmns.api.ComponentInstaller;
 
 public class ETC1Compressor {
+    public static final String COMPRESSED_ATLAS_FILE_EXTENTION = ".r3-compressed-atlas";
     public static final String EXTRACTED_ALPHA_CHANNELS_FILE_EXTENTION = ".r3-alpha";
+    public static final String ETC1AtlasCompression = "R3.libGDX.ETC1AtlasCompression";
 
     static private ComponentInstaller<ETC1CompressorComponent> componentInstaller = new ComponentInstaller<ETC1CompressorComponent>(
 	    "ETC1Compressor");
@@ -38,5 +40,7 @@ public class ETC1Compressor {
     public static AlphaChannelExtractorSpecs newAlphaChannelExtractorSpecs() {
 	return invoke().newAlphaChannelExtractorSpecs();
     }
+
+    
 
 }

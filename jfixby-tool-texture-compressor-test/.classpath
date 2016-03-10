@@ -28,5 +28,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-gdx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-packer-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-packer-gdx"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/gdx-jfixby-cmns"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

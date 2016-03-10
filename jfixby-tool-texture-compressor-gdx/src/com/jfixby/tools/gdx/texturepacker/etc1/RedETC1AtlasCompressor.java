@@ -13,10 +13,12 @@ import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.color.Colors;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractor;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.CompressedAtlasDescriptor;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressorSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
@@ -29,7 +31,7 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
     }
 
     static RedETC1AtlasCompressionResult doCompress(ETC1AtlasCompressorSettings settings) throws IOException {
-
+	Json.invoke();
 	File atlasFile = Debug.checkNull("atlas_file_path_string", settings.getAtlasFile());
 
 	L.d("compressing atlas to ETC1", atlasFile);
@@ -37,13 +39,18 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
 
 	RedETC1AtlasCompressionResult result = new RedETC1AtlasCompressionResult();
 
-	result.setAtlasFile(atlasFile);
+	CompressedAtlasDescriptor outputAtlas = new CompressedAtlasDescriptor();
+
+	result.setGdxAtlasFile(atlasFile);
 
 	File atlasFolder = atlasFile.parent();
 
 	FileHandle gdxAtlasFile = new ToGdxFileAdaptor(atlasFile);
 	FileHandle gdxAtlasFolder = new ToGdxFileAdaptor(atlasFolder);
 	TextureAtlas.TextureAtlasData data = new TextureAtlas.TextureAtlasData(gdxAtlasFile, gdxAtlasFolder, false);
+
+	String outputAtlasName = atlasFile.nameWithoutExtension() + ETC1Compressor.COMPRESSED_ATLAS_FILE_EXTENTION;
+	File outputAtlasFile = atlasFolder.child(outputAtlasName);
 
 	Array<Page> pages = data.getPages();
 
@@ -97,15 +104,22 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
 	}
 	if (extractAlphaChannes) {
 	    byte[] bytes = alphaExtractor.serialize();
-	    String alphaInfoFile_name = atlasFile.nameWithoutExtension()
+	    String alpha_channes_file_name = atlasFile.nameWithoutExtension()
 		    + ETC1Compressor.EXTRACTED_ALPHA_CHANNELS_FILE_EXTENTION;
-	    File alpha_channes_file = atlasFolder.child(alphaInfoFile_name);
+	    File alpha_channes_file = atlasFolder.child(alpha_channes_file_name);
 	    alpha_channes_file.writeBytes(bytes);
+	    outputAtlas.alpha_channes_file_name = alpha_channes_file.getName();
 	    L.d("writing " + bytes.length / 1024 + " kBytes", alpha_channes_file);
 
 	}
 
 	atlasFile.writeString(atlasData);
+
+	outputAtlas.gdx_atlas_file_name = atlasFile.getName();
+	outputAtlas.compression_method = ETC1Compressor.ETC1AtlasCompression;
+
+	outputAtlasFile.writeString(Json.serializeToString(outputAtlas));
+	result.setCompressedAtlasFile(outputAtlasFile);
 
 	return result;
     }

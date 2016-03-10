@@ -27,9 +27,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
-import com.jfixby.cmns.api.collections.Collection;
+import com.jfixby.cmns.adopted.gdx.json.GdxJson;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
+import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
@@ -40,23 +41,25 @@ import com.jfixby.tools.gdx.texturepacker.api.TexturePackingSpecs;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressorSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
+import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlas;
+import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlasReader;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
 
 public class ETC1AtlasCompressorTest implements ApplicationListener {
 
-    private File regularAtlasPathFile;
+    private File regularAtlasFile;
+    private File compressedAtlasFile;
 
-    private File etc1AtlasPathFile;
-
-    public ETC1AtlasCompressorTest(File regularAtlasPathFile, File etc1AtlasPathFile) {
-	this.regularAtlasPathFile = regularAtlasPathFile;
-	this.etc1AtlasPathFile = etc1AtlasPathFile;
+    public ETC1AtlasCompressorTest(File regularAtlasFile, File compressedAtlasFile) {
+	this.regularAtlasFile = regularAtlasFile;
+	this.compressedAtlasFile = compressedAtlasFile;
     }
 
     public static void main(String[] args) throws Exception {
 	DesktopAssembler.setup();
 	TexturePacker.installComponent(new GdxTexturePacker());
 	ETC1Compressor.installComponent(new RedETC1AtlasCompressor());
+	Json.installComponent(new GdxJson());
 
 	File homeFolder = LocalFileSystem.ApplicationHome();
 	File spritesFolder = homeFolder.child("sprites");
@@ -68,33 +71,36 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	prepareTestAtlas(spritesFolder, regularAtlasFolder, atlasFilename);
 	AtlasPackingResult atlas_packing_result = prepareTestAtlas(spritesFolder, etc1AtlasFolder, atlasFilename);
 
-	Collection<File> pages = atlas_packing_result.listPages();
 	// ETC1Compressor.
 
 	String outputAtlasFilename = atlas_packing_result.getAtlasOutputFile().getName();
-	File regularAtlasFilePath = regularAtlasFolder.child(outputAtlasFilename);
-	File etc1AtlasFilePath = etc1AtlasFolder.child(outputAtlasFilename);
+	File regularAtlasFile = regularAtlasFolder.child(outputAtlasFilename);
+	File etc1AtlasFile = etc1AtlasFolder.child(outputAtlasFilename);
+	File compressedAtlasFile = null;
 
 	boolean COMPRESS = true;
 
 	if (COMPRESS) {
 	    ETC1AtlasCompressorSettings settings = ETC1Compressor.newAtlasCompressionSettings();
-	    settings.setAtlasFile(etc1AtlasFilePath);
+	    settings.setAtlasFile(etc1AtlasFile);
 	    // Color fuxia = new com.badlogic.gdx.graphics.Color(1f, 0f, 1f,
 	    // 1f);
 	    // settings.setTransparentColor(fuxia);
 	    settings.setDeleteOriginalPNG(true);
 	    settings.setZipCompressExtractedAlphaChannels(true);
-	    settings.setRemoveAlpha(true);
+	    settings.setRemoveAlpha(!true);
 	    settings.setExtractAlphaChannes(true);
 	    L.d();
 	    ETC1AtlasCompressionResult compressionResult = ETC1Compressor.compressAtlas(settings);
 	    L.d();
 	    compressionResult.print();
+
+	    compressedAtlasFile = compressionResult.getCompressedAtlasFile();
+
 	}
 
 	L.d("Showing compressed sprites");
-	new LwjglApplication(new ETC1AtlasCompressorTest(regularAtlasFilePath, etc1AtlasFilePath), "", 1024, 768);
+	new LwjglApplication(new ETC1AtlasCompressorTest(regularAtlasFile, compressedAtlasFile), "", 1024, 768);
 
     }
 
@@ -126,15 +132,25 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
     private TextureAtlas etc1Atlas;
     private Array<Sprite> etc1Sprites;
+    private RedCompressedAtlas compressed_atlas;
 
     public void create() {
 	batch = new SpriteBatch();
 
-	regularAtlas = new TextureAtlas(this.regularAtlasPathFile.toJavaFile().getAbsolutePath());
+	regularAtlas = new TextureAtlas(this.regularAtlasFile.toJavaFile().getAbsolutePath());
 	regularSprites = regularAtlas.createSprites();
 
-	etc1Atlas = new TextureAtlas(this.etc1AtlasPathFile.toJavaFile().getAbsolutePath());
-	etc1Sprites = etc1Atlas.createSprites();
+	RedCompressedAtlasReader atlas_reader = new RedCompressedAtlasReader();
+
+	try {
+	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
+	    compressed_atlas.load();
+	    etc1Atlas = compressed_atlas.getGdxAtlas();
+	    etc1Sprites = etc1Atlas.createSprites();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
 	float x = 10;
 	float y = 10;
 	for (int i = 0; i < regularSprites.size; i++) {
