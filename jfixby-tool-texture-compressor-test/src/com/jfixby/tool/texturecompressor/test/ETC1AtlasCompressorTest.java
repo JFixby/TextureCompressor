@@ -44,8 +44,8 @@ import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
 import com.jfixby.tools.gdx.texturepacker.etc1.ATLAS_LOAD_MODE;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlas;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlasReader;
-import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedTextureAtlas;
+import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
 
 public class ETC1AtlasCompressorTest implements ApplicationListener {
 
@@ -174,6 +174,8 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     }
 
     public void render() {
+	final float gray = 0.5f;
+	Gdx.gl.glClearColor(gray, gray, gray, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 	int x = 20, y = 20;
