@@ -16,6 +16,7 @@ import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.CompressedAtlasDescriptor;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedTextureAtlas.AtlasRegion;
 
@@ -105,23 +106,25 @@ public class RedCompressedAtlas {
 	AlphaPage alphaPage = alphaPages.findAlphaPage(name);
 	alphaPage.checkValid(name);
 	alphaPage.checkValid((int) W, (int) H);
-
 	Pixmap mergedPixmap = new Pixmap((int) W, (int) H, Format.RGBA8888);
+	// mergedPixmap.setColor(0x0000ff00);
+	// mergedPixmap.fill();
+	// mergedPixmap.drawPixmap(etc1Pixmap, 0, 0);
+	Pixmap.setBlending(Pixmap.Blending.None);
+	// mergedPixmap.setBlending(Blending.SourceOver);
 	for (int x = 0; x < W; x++) {
 	    for (int y = 0; y < H; y++) {
-		final float alpha = alphaPage.getAlphaValue(x, y);
-		final int etc1value = etc1Pixmap.getPixel(x, y);
-		Color gdxColor = new Color(etc1value);
-		gdxColor.a = alpha;
-		// L.d("alpha", alpha);
-		mergedPixmap.setColor(gdxColor);
+		final float alpha = alphaPage.getAlphaValue(x, y) * 1 + 0;
+		final int color_int = etc1Pixmap.getPixel(x, y);
+		Color color = new Color(color_int);
+		color.a = alpha * 1 + 0 * 0.5f;
+		mergedPixmap.setColor(color);
 		mergedPixmap.drawPixel(x, y);
 	    }
 	}
-	// L.d();
+	L.d();
 
 	final Texture newTexture = new Texture(mergedPixmap);
-
 	etc1Pixmap.dispose();
 	mergedPixmap.dispose();
 

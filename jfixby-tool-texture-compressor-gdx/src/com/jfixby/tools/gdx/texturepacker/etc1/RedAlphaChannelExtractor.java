@@ -4,6 +4,8 @@ package com.jfixby.tools.gdx.texturepacker.etc1;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -12,7 +14,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.debug.Debug;
-import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.io.IO;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionResult;
@@ -65,28 +66,6 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 	pages.get(pages.size() - 1).checkValid(newPageFileName);
     }
 
-    private static byte[] unZIP(byte[] alphas_bytes) throws IOException {
-	Err.reportError("Zip is not properly working yet");
-	ByteArrayInputStream input = new ByteArrayInputStream(alphas_bytes);
-	int len = IO.readInt(input);
-	GZIPInputStream zip = new GZIPInputStream(input);
-	byte[] buf = new byte[len];
-	zip.read(buf, 0, len);
-	return buf;
-    }
-
-    private byte[] compressZIP(byte[] bytes) throws IOException {
-	Err.reportError("Zip is not properly working yet");
-	ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-	IO.writeInt(buffer, bytes.length);
-	GZIPOutputStream zip = new GZIPOutputStream(buffer);
-	zip.write(bytes);
-	zip.flush();
-	zip.close();
-	buffer.close();
-	return buffer.toByteArray();
-    }
-
     @Override
     public AlphaChannelExtractionResult process(AlphaChannelExtractionSettings settings) {
 	GdxNativesLoader.load();
@@ -111,31 +90,36 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 
     @Override
     public byte[] serialize() throws IOException {
+	OutputStream os = null;
 	ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-	IO.writeInt(buffer, pages.size());
-	for (int i = 0; i < pages.size(); i++) {
-	    AlphaPage.writePage(buffer, pages.get(i));
-	}
-	buffer.flush();
-	buffer.close();
-	byte[] bytes = buffer.toByteArray();
+	os = buffer;
 	if (zip) {
-	    bytes = compressZIP(bytes);
+	    os = new GZIPOutputStream(os);
 	}
-	return bytes;
+	IO.writeInt(os, pages.size());
+	for (int i = 0; i < pages.size(); i++) {
+	    AlphaPage.writePage(os, pages.get(i));
+	}
+	os.close();
+	buffer.close();
+	return buffer.toByteArray();
     }
 
     public static AlphaPages deserialize(byte[] alphas_bytes, boolean zip) throws IOException {
 
-	if (zip) {
-	    alphas_bytes = unZIP(alphas_bytes);
-	}
+	InputStream is = null;
 
 	ByteArrayInputStream input = new ByteArrayInputStream(alphas_bytes);
+	is = input;
+
+	if (zip) {
+	    is = new GZIPInputStream(is);
+	}
+
 	AlphaPages pages = new AlphaPages();
-	int pagesNumber = IO.readInt(input);
+	int pagesNumber = IO.readInt(is);
 	for (int i = 0; i < pagesNumber; i++) {
-	    AlphaPage page = AlphaPage.readPage(input);
+	    AlphaPage page = AlphaPage.readPage(is);
 	    pages.add(page);
 	}
 	return pages;
@@ -154,13 +138,5 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 	    page.saveAsPng(png_file);
 	}
     }
-
-    // RedAlphaChannelExtractor alphaInfo = new RedAlphaChannelExtractor();
-    // alphaInfo.setTransparentColor(transparentColor);
-    // collectAlphaInfo(pageFile, alphaInfo, newPageFileName);
-    // byte[] alphaInfoBytes = alphaInfo.toByteArray();
-    // String alphaInfoFileName = atlasFile.getName() + ".alpha-info";
-    // File alphaInfoFile = atlasFolder.child(alphaInfoFileName);
-    // alphaInfoFile.writeBytes(alphaInfoBytes);
 
 }

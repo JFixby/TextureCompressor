@@ -30,7 +30,7 @@ public class AlphaExtractorTest {
 	ChildrenList textures = input_folder.listChildren().filter(file -> file.extensionIs(".png"));
 
 	AlphaChannelExtractorSpecs alphaExtractorSpecs = ETC1Compressor.newAlphaChannelExtractorSpecs();
-	boolean zip = false;
+	boolean zip = !false;
 	alphaExtractorSpecs.setUseZIPCompression(zip);
 
 	AlphaChannelExtractor alphaExtractor = ETC1Compressor.newAlphaChannelExtractor(alphaExtractorSpecs);

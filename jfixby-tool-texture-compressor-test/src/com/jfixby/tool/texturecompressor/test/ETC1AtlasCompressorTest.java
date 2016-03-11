@@ -64,7 +64,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	Json.installComponent(new GdxJson());
 
 	File homeFolder = LocalFileSystem.ApplicationHome();
-	File spritesFolder = homeFolder.child("sprites");
+	File spritesFolder = homeFolder.child("sprites").child("benchmark");
 	File regularAtlasFolder = homeFolder.child("atlas");
 	File etc1AtlasFolder = homeFolder.child("atlas-etc1");
 
@@ -89,7 +89,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	    // 1f);
 	    // settings.setTransparentColor(fuxia);
 	    settings.setDeleteOriginalPNG(true);
-	    settings.setZipCompressExtractedAlphaChannels(!true);
+	    settings.setZipCompressExtractedAlphaChannels(true);
 	    settings.setRemoveAlpha(true);
 	    settings.setExtractAlphaChannes(true);
 	    L.d();

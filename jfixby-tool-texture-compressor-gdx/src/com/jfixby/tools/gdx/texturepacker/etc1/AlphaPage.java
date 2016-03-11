@@ -1,11 +1,11 @@
 
 package com.jfixby.tools.gdx.texturepacker.etc1;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -45,21 +45,23 @@ class AlphaPage {
 	bytes[pointer] = alpha;
     }
 
-    public void writeTo(ByteArrayOutputStream buffer) throws IOException {
+    public void writeTo(OutputStream buffer) throws IOException {
 	checkValid(newPageFileName);
 	ObjectOutputStream obj = new ObjectOutputStream(buffer);
 	obj.writeObject(newPageFileName);
 	obj.writeInt(w);
 	obj.writeInt(h);
 	obj.writeObject(bytes);
-	obj.close();
+	obj.flush();
+//	obj.close();
+	// obj.close();
     }
 
-    public static void writePage(ByteArrayOutputStream buffer, AlphaPage page) throws IOException {
+    public static void writePage(OutputStream buffer, AlphaPage page) throws IOException {
 	page.writeTo(buffer);
     }
 
-    public static AlphaPage readPage(ByteArrayInputStream input) throws IOException {
+    public static AlphaPage readPage(InputStream input) throws IOException {
 
 	ObjectInputStream is = new ObjectInputStream(input);
 	String newPageFileName;
