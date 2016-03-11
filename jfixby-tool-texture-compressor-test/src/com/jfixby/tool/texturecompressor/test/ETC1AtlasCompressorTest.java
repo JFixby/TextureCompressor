@@ -28,6 +28,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.jfixby.cmns.adopted.gdx.json.GdxJson;
+import com.jfixby.cmns.api.debug.Debug;
+import com.jfixby.cmns.api.debug.DebugTimer;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
@@ -139,17 +141,23 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     public void create() {
 	batch = new SpriteBatch();
 
+	DebugTimer timer = Debug.newTimer();
+
+	timer.reset();
 	regularAtlas = new TextureAtlas(this.regularAtlasFile.toJavaFile().getAbsolutePath());
 	regularSprites = regularAtlas.createSprites();
+	timer.printTime("Regular Texture Atlas");
 
 	RedCompressedAtlasReader atlas_reader = new RedCompressedAtlasReader();
 
 	try {
+	    timer.reset();
 	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
 	    compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.MERGED_ALPHA_CHANNEL);
 	    compressed_atlas.load();
 	    etc1Atlas = compressed_atlas.getGdxAtlas();
 	    etc1Sprites = etc1Atlas.createSprites();
+	    timer.printTime("ETC1 Texture Atlas");
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
