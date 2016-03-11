@@ -66,7 +66,8 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	Json.installComponent(new GdxJson());
 
 	File homeFolder = LocalFileSystem.ApplicationHome();
-	File spritesFolder = homeFolder.child("sprites").child("benchmark");
+	File spritesFolder = homeFolder.child("sprites");
+	// .child("benchmark");
 	File regularAtlasFolder = homeFolder.child("atlas");
 	File etc1AtlasFolder = homeFolder.child("atlas-etc1");
 
@@ -153,7 +154,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	try {
 	    timer.reset();
 	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
-	    compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.MERGED_ALPHA_CHANNEL);
+	    compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER);
 	    compressed_atlas.load();
 	    etc1Atlas = compressed_atlas.getGdxAtlas();
 	    etc1Sprites = etc1Atlas.createSprites();

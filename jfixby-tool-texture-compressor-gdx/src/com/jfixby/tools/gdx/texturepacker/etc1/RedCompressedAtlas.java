@@ -70,9 +70,25 @@ public class RedCompressedAtlas {
 	atlas_data.bindAlphaChannels(alphaPages);
 
 	gdx_atlas = new RedCompressedTextureAtlas(atlas_data);
-	//
+	// ,lkkkkkkkk
 	// L.d(alphaPages);
 	//
+	if (this.mode == ATLAS_LOAD_MODE.MERGED_ALPHA_CHANNEL) {
+	    loadMergedAlphaChannel(alphaPages);
+	}
+	if (this.mode == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
+	    Err.reportError("Mode is not supported yet: " + mode);
+
+	}
+	if (this.mode == ATLAS_LOAD_MODE.FUXIA_ALPHA_COLOR_SHADER) {
+	    Err.reportError("Mode is not supported yet: " + mode);
+	}
+	// Sys.exit();
+
+	loaded = true;
+    }
+
+    private void loadMergedAlphaChannel(AlphaPages alphaPages) {
 	List<TextureContainer> gdxPagesList = Collections.newList();
 	ObjectSet<TextureContainer> gdxTextures = gdx_atlas.getTextures();
 	gdxPagesList.addAll(gdxTextures);
@@ -90,10 +106,6 @@ public class RedCompressedAtlas {
 	    fixRegions(oldGdxTexture, newGdxTexture, gdx_atlas);
 
 	}
-
-	// Sys.exit();
-
-	loaded = true;
     }
 
     private Texture newTexture(Texture texture, TextureContainer container, AlphaPages alphaPages) {
@@ -127,21 +139,8 @@ public class RedCompressedAtlas {
 	final Texture newTexture = new Texture(mergedPixmap);
 	etc1Pixmap.dispose();
 	mergedPixmap.dispose();
-
-	// ----------------
-
 	texture.dispose();
-	// Pixmap newPixmap = new Pixmap(texture.getWidth(),
-	// texture.getHeight(), Format.RGBA8888);
-	// newPixmap.setColor(0xffff00ff);
-	// newPixmap.fill();
-	// final Texture newTexture = new Texture(newPixmap);
-	// newPixmap.dispose();
 	return newTexture;
-    }
-
-    private Object toHex(int alpha) {
-	return Integer.toHexString(alpha);
     }
 
     static private void fixRegions(Texture oldGdxTexture, Texture newGdxTexture, RedCompressedTextureAtlas gdx_atlas) {
@@ -156,6 +155,9 @@ public class RedCompressedAtlas {
     }
 
     public void setLoadMode(ATLAS_LOAD_MODE mode) {
+	if (this.loaded) {
+	    Err.reportError("ATLAS_LOAD_MODE can be changed only for unloaded atlas");
+	}
 	this.mode = Debug.checkNull("mode", mode);
     }
 
