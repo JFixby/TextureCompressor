@@ -77,7 +77,7 @@ public class RedCompressedAtlas {
 	    loadMergedAlphaChannel(alphaPages);
 	}
 	if (this.mode == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
-	    Err.reportError("Mode is not supported yet: " + mode);
+//	    Err.reportError("Mode is not supported yet: " + mode);
 
 	}
 	if (this.mode == ATLAS_LOAD_MODE.FUXIA_ALPHA_COLOR_SHADER) {
@@ -159,6 +159,10 @@ public class RedCompressedAtlas {
 	    Err.reportError("ATLAS_LOAD_MODE can be changed only for unloaded atlas");
 	}
 	this.mode = Debug.checkNull("mode", mode);
+    }
+
+    public ATLAS_LOAD_MODE getLoadMode() {
+	return mode;
     }
 
 }
