@@ -41,9 +41,11 @@ import com.jfixby.tools.gdx.texturepacker.api.TexturePackingSpecs;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressorSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
+import com.jfixby.tools.gdx.texturepacker.etc1.ATLAS_LOAD_MODE;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlas;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlasReader;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
+import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedTextureAtlas;
 
 public class ETC1AtlasCompressorTest implements ApplicationListener {
 
@@ -87,8 +89,8 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	    // 1f);
 	    // settings.setTransparentColor(fuxia);
 	    settings.setDeleteOriginalPNG(true);
-	    settings.setZipCompressExtractedAlphaChannels(true);
-	    settings.setRemoveAlpha(!true);
+	    settings.setZipCompressExtractedAlphaChannels(!true);
+	    settings.setRemoveAlpha(true);
 	    settings.setExtractAlphaChannes(true);
 	    L.d();
 	    ETC1AtlasCompressionResult compressionResult = ETC1Compressor.compressAtlas(settings);
@@ -100,7 +102,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	}
 
 	L.d("Showing compressed sprites");
-	new LwjglApplication(new ETC1AtlasCompressorTest(regularAtlasFile, compressedAtlasFile), "", 1024, 768);
+	new LwjglApplication(new ETC1AtlasCompressorTest(regularAtlasFile, compressedAtlasFile), "", 1600, 768);
 
     }
 
@@ -130,7 +132,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private TextureAtlas regularAtlas;
     private Array<Sprite> regularSprites;
 
-    private TextureAtlas etc1Atlas;
+    private RedCompressedTextureAtlas etc1Atlas;
     private Array<Sprite> etc1Sprites;
     private RedCompressedAtlas compressed_atlas;
 
@@ -144,6 +146,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
 	try {
 	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
+	    compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.MERGED_ALPHA_CHANNEL);
 	    compressed_atlas.load();
 	    etc1Atlas = compressed_atlas.getGdxAtlas();
 	    etc1Sprites = etc1Atlas.createSprites();

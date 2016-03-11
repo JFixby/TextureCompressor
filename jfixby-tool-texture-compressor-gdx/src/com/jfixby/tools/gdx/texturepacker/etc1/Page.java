@@ -1,77 +1,45 @@
-
 package com.jfixby.tools.gdx.texturepacker.etc1;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
-class Page {
+public class Page {
+    public final FileHandle textureFile;
+    private Texture texture;
+    public final float width, height;
+    public final boolean useMipMaps;
+    public  Format format;
+    public final TextureFilter minFilter;
+    public final TextureFilter magFilter;
+    public final TextureWrap uWrap;
+    public final TextureWrap vWrap;
 
     @Override
     public String toString() {
-	return "Page(" + newPageFileName + ") " + w + " x " + h + "";
+	return "Page [textureFile=" + textureFile + ", texture=" + texture + "]";
     }
 
-    byte[] bytes;
-    int pointer = 0;
-    private String newPageFileName;
-    private int w;
-    private int h;
-
-    public Page(String newPageFileName, int w, int h) {
-	bytes = new byte[w * h];
-	this.w = w;
-	this.h = h;
-	this.newPageFileName = newPageFileName;
+    public Page(FileHandle handle, float width, float height, boolean useMipMaps, Format format,
+	    TextureFilter minFilter, TextureFilter magFilter, TextureWrap uWrap, TextureWrap vWrap) {
+	this.width = width;
+	this.height = height;
+	this.textureFile = handle;
+	this.useMipMaps = useMipMaps;
+	this.format = format;
+	this.minFilter = minFilter;
+	this.magFilter = magFilter;
+	this.uWrap = uWrap;
+	this.vWrap = vWrap;
     }
 
-    public void addAlphaValue(int alpha) {
-	bytes[pointer] = (byte) alpha;
-	pointer++;
+    public Texture getTexture() {
+	return texture;
     }
 
-    public void checkValid(String newPageFileName) {
-	if (!this.newPageFileName.equals(newPageFileName)) {
-	    throw new Error("AlphaInfoPage<" + this.newPageFileName + "> is corrupted");
-	}
-	if (pointer != bytes.length) {
-	    throw new Error("AlphaInfoPage<" + this.newPageFileName + "> is corrupted");
-	}
+    public void setTexture(Texture texture) {
+	this.texture = texture;
     }
-
-    public void writeTo(ByteArrayOutputStream buffer) throws IOException {
-	checkValid(newPageFileName);
-	ObjectOutputStream obj = new ObjectOutputStream(buffer);
-	obj.writeObject(newPageFileName);
-	obj.writeInt(w);
-	obj.writeInt(h);
-	obj.writeObject(bytes);
-	obj.close();
-    }
-
-    public static void writePage(ByteArrayOutputStream buffer, Page page) throws IOException {
-	page.writeTo(buffer);
-    }
-
-    public static Page readPage(ByteArrayInputStream input) throws IOException {
-
-	ObjectInputStream is = new ObjectInputStream(input);
-	String newPageFileName;
-	try {
-	    newPageFileName = (String) is.readObject();
-
-	    int w = is.readInt();
-	    int h = is.readInt();
-	    byte[] bytes = (byte[]) is.readObject();
-	    Page page = new Page(newPageFileName, w, h);
-	    page.bytes = bytes;
-	    return page;
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
-	    throw new IOException(e);
-	}
-    }
-
 }

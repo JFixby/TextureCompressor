@@ -2,13 +2,22 @@ package com.jfixby.tools.gdx.texturepacker.etc1;
 
 import java.io.IOException;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ETC1;
+import com.badlogic.gdx.graphics.glutils.ETC1.ETC1Data;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectSet;
 import com.jfixby.cmns.adopted.gdx.fs.ToGdxFileAdaptor;
+import com.jfixby.cmns.api.collections.Collections;
+import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
-import com.jfixby.cmns.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.CompressedAtlasDescriptor;
+import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedTextureAtlas.AtlasRegion;
 
 public class RedCompressedAtlas {
 
@@ -31,7 +40,7 @@ public class RedCompressedAtlas {
 	zip = descriptor.alpha_channes_are_zip_compressed;
     }
 
-    public TextureAtlas getGdxAtlas() {
+    public RedCompressedTextureAtlas getGdxAtlas() {
 	return gdx_atlas;
     }
 
@@ -39,9 +48,11 @@ public class RedCompressedAtlas {
 
     private String gdx_atlas_name;
 
-    private TextureAtlas gdx_atlas;
+    private RedCompressedTextureAtlas gdx_atlas;
 
     private boolean zip;
+
+    private ATLAS_LOAD_MODE mode = ATLAS_LOAD_MODE.MERGED_ALPHA_CHANNEL;
 
     public void load() throws IOException {
 	if (loaded) {
@@ -49,15 +60,100 @@ public class RedCompressedAtlas {
 	}
 	File gdx_atlas_file = descriptorFile.parent().child(gdx_atlas_name);
 	ToGdxFileAdaptor adaptor = new ToGdxFileAdaptor(gdx_atlas_file);
-	gdx_atlas = new TextureAtlas(adaptor);
 
 	File alphas_file = descriptorFile.parent().child(alpha_channes_file_name);
 	byte[] alphas_bytes = alphas_file.readBytes();
 
-	Pages pages = RedAlphaChannelExtractor.deserialize(alphas_bytes, zip);
-	L.d(pages);
+	AlphaPages alphaPages = RedAlphaChannelExtractor.deserialize(alphas_bytes, zip);
+	RedCompressedTextureAtlasData atlas_data = new RedCompressedTextureAtlasData(adaptor, adaptor.parent(), false);
+	atlas_data.bindAlphaChannels(alphaPages);
+
+	gdx_atlas = new RedCompressedTextureAtlas(atlas_data);
+	//
+	// L.d(alphaPages);
+	//
+	List<TextureContainer> gdxPagesList = Collections.newList();
+	ObjectSet<TextureContainer> gdxTextures = gdx_atlas.getTextures();
+	gdxPagesList.addAll(gdxTextures);
+	gdxPagesList.print("gdxPagesList");
+	//
+
+	for (int i = 0; i < gdxPagesList.size(); i++) {
+	    TextureContainer container = gdxPagesList.getElementAt(i);
+	    final Texture oldGdxTexture = container.getTexture();
+
+	    final Texture newGdxTexture = newTexture(oldGdxTexture, container, alphaPages);
+	    oldGdxTexture.dispose();
+	    container.setTexture(newGdxTexture);
+
+	    fixRegions(oldGdxTexture, newGdxTexture, gdx_atlas);
+
+	}
+
+	// Sys.exit();
 
 	loaded = true;
+    }
+
+    private Texture newTexture(Texture texture, TextureContainer container, AlphaPages alphaPages) {
+
+	ETC1Data etc1Data = new ETC1Data(container.getTextureFile());
+	Pixmap etc1Pixmap = ETC1.decodeImage(etc1Data, Format.RGB888);
+	final float W = texture.getWidth();
+	final float H = texture.getHeight();
+	String name = container.getTextureFile().name();
+	AlphaPage alphaPage = alphaPages.findAlphaPage(name);
+	alphaPage.checkValid(name);
+	alphaPage.checkValid((int) W, (int) H);
+
+	Pixmap mergedPixmap = new Pixmap((int) W, (int) H, Format.RGBA8888);
+	for (int x = 0; x < W; x++) {
+	    for (int y = 0; y < H; y++) {
+		final float alpha = alphaPage.getAlphaValue(x, y);
+		final int etc1value = etc1Pixmap.getPixel(x, y);
+		Color gdxColor = new Color(etc1value);
+		gdxColor.a = alpha;
+		// L.d("alpha", alpha);
+		mergedPixmap.setColor(gdxColor);
+		mergedPixmap.drawPixel(x, y);
+	    }
+	}
+	// L.d();
+
+	final Texture newTexture = new Texture(mergedPixmap);
+
+	etc1Pixmap.dispose();
+	mergedPixmap.dispose();
+
+	// ----------------
+
+	texture.dispose();
+	// Pixmap newPixmap = new Pixmap(texture.getWidth(),
+	// texture.getHeight(), Format.RGBA8888);
+	// newPixmap.setColor(0xffff00ff);
+	// newPixmap.fill();
+	// final Texture newTexture = new Texture(newPixmap);
+	// newPixmap.dispose();
+	return newTexture;
+    }
+
+    private Object toHex(int alpha) {
+	return Integer.toHexString(alpha);
+    }
+
+    static private void fixRegions(Texture oldGdxTexture, Texture newGdxTexture, RedCompressedTextureAtlas gdx_atlas) {
+	Array<AtlasRegion> regions = gdx_atlas.getRegions();
+	for (int i = 0; i < regions.size; i++) {
+	    AtlasRegion region = regions.get(i);
+	    Texture regionTexture = region.getTexture();
+	    if (regionTexture == oldGdxTexture) {
+		region.setTexture(newGdxTexture);
+	    }
+	}
+    }
+
+    public void setLoadMode(ATLAS_LOAD_MODE mode) {
+	this.mode = Debug.checkNull("mode", mode);
     }
 
 }

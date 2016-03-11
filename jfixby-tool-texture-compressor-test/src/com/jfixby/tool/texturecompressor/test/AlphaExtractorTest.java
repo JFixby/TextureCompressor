@@ -12,6 +12,8 @@ import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionSetting
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractor;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
+import com.jfixby.tools.gdx.texturepacker.etc1.AlphaPages;
+import com.jfixby.tools.gdx.texturepacker.etc1.RedAlphaChannelExtractor;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
 
 public class AlphaExtractorTest {
@@ -22,13 +24,14 @@ public class AlphaExtractorTest {
 	ETC1Compressor.installComponent(new RedETC1AtlasCompressor());
 
 	File home = LocalFileSystem.ApplicationHome();
-	File input_folder = home.child("input");
+	File input_folder = home.child("sprites");
 	File output_folder = home.child("output");
 
 	ChildrenList textures = input_folder.listChildren().filter(file -> file.extensionIs(".png"));
 
 	AlphaChannelExtractorSpecs alphaExtractorSpecs = ETC1Compressor.newAlphaChannelExtractorSpecs();
-	alphaExtractorSpecs.setUseZIPCompression(true);
+	boolean zip = false;
+	alphaExtractorSpecs.setUseZIPCompression(zip);
 
 	AlphaChannelExtractor alphaExtractor = ETC1Compressor.newAlphaChannelExtractor(alphaExtractorSpecs);
 
@@ -46,6 +49,13 @@ public class AlphaExtractorTest {
 	File output_file = output_folder.child("AlphaExtractorTest.file");
 	output_file.writeBytes(bytes);
 	L.d("writing " + bytes.length / 1024 + " kBytes", output_file);
+
+	alphaExtractor.saveAsPng(output_file.parent());
+
+	AlphaPages deserialized = RedAlphaChannelExtractor.deserialize(bytes, zip);
+	File out2 = output_folder.child("second");
+	out2.makeFolder();
+	RedAlphaChannelExtractor.savePagesAsPNG(out2, deserialized);
 
     }
 
