@@ -150,16 +150,16 @@ public class RedCompressedTextureAtlasData {
 	this.alphaPages = alphaPages;
     }
 
-    public Page findPageByTexture(Texture texture) {
-	for (int i = 0; i < this.pages.size; i++) {
-	    Page page = this.pages.get(i);
-	    if (page.getTexture() == texture) {
-		return page;
-	    }
-	}
-	Collections.newList(this.pages).print("pages");
-	L.d("Texture", texture);
-	Err.reportError("Texture not found");
-	return null;
-    }
+//    public Page findPageByTexture(Texture texture) {
+//	for (int i = 0; i < this.pages.size; i++) {
+//	    Page page = this.pages.get(i);
+//	    if (page.getTexture() == texture) {
+//		return page;
+//	    }
+//	}
+//	Collections.newList(this.pages).print("pages");
+//	L.d("Texture", texture);
+//	Err.reportError("Texture not found");
+//	return null;
+//    }
 }

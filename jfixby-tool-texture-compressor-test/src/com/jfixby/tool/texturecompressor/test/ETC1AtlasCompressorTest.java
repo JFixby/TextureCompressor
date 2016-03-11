@@ -66,7 +66,8 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	Json.installComponent(new GdxJson());
 
 	File homeFolder = LocalFileSystem.ApplicationHome();
-	File spritesFolder = homeFolder.child("sprites").child("benchmark");
+//	File spritesFolder = homeFolder.child("sprites").child("benchmark");
+	File spritesFolder = homeFolder.child("sprites");
 	File regularAtlasFolder = homeFolder.child("atlas");
 	File etc1AtlasFolder = homeFolder.child("atlas-etc1");
 

@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ETC1;
 import com.badlogic.gdx.graphics.glutils.ETC1.ETC1Data;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectSet;
 import com.jfixby.cmns.adopted.gdx.fs.ToGdxFileAdaptor;
-import com.jfixby.cmns.api.collections.Collections;
-import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
@@ -73,23 +70,24 @@ public class RedCompressedAtlas {
 	//
 	// L.d(alphaPages);
 	//
-	List<TextureContainer> gdxPagesList = Collections.newList();
-	ObjectSet<TextureContainer> gdxTextures = gdx_atlas.getTextures();
-	gdxPagesList.addAll(gdxTextures);
-	gdxPagesList.print("gdxPagesList");
+	// List<TextureContainer> gdxPagesList = Collections.newList();
+	// ObjectSet<TextureContainer> gdxTextures = gdx_atlas.getTextures();
+	// gdxPagesList.addAll(gdxTextures);
+	// gdxPagesList.print("gdxPagesList");
+	// //
 	//
-
-	for (int i = 0; i < gdxPagesList.size(); i++) {
-	    TextureContainer container = gdxPagesList.getElementAt(i);
-	    final Texture oldGdxTexture = container.getTexture();
-
-	    final Texture newGdxTexture = newTexture(oldGdxTexture, container, alphaPages);
-	    oldGdxTexture.dispose();
-	    container.setTexture(newGdxTexture);
-
-	    fixRegions(oldGdxTexture, newGdxTexture, gdx_atlas);
-
-	}
+	// for (int i = 0; i < gdxPagesList.size(); i++) {
+	// TextureContainer container = gdxPagesList.getElementAt(i);
+	// final Texture oldGdxTexture = container.getTexture();
+	//
+	// final Texture newGdxTexture = newTexture(oldGdxTexture, container,
+	// alphaPages);
+	// oldGdxTexture.dispose();
+	// container.setTexture(newGdxTexture);
+	//
+	// fixRegions(oldGdxTexture, newGdxTexture, gdx_atlas);
+	//
+	// }
 
 	// Sys.exit();
 

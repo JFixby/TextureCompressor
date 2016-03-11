@@ -7,15 +7,19 @@ import java.util.Comparator;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.PixmapTextureData;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
+import com.jfixby.cmns.api.log.L;
 
 /**
  * Loads images from texture atlases created by TexturePacker.<br>
@@ -87,16 +91,16 @@ public class RedCompressedTextureAtlas implements Disposable {
 	ObjectMap<Page, Texture> pageToTexture = new ObjectMap<Page, Texture>();
 	for (Page page : data.pages) {
 	    Texture texture = null;
-	    if (page.getTexture() == null) {
-		texture = loadTexture(page, data);
+	    if (true) {
+		texture = loadTextureB(page, data);
 		texture.setFilter(page.minFilter, page.magFilter);
 		texture.setWrap(page.uWrap, page.vWrap);
 	    } else {
-		texture = page.getTexture();
-		texture.setFilter(page.minFilter, page.magFilter);
-		texture.setWrap(page.uWrap, page.vWrap);
+		// texture = page.getTexture();
+		// texture.setFilter(page.minFilter, page.magFilter);
+		// texture.setWrap(page.uWrap, page.vWrap);
 	    }
-	    textures.add(new TextureContainer(texture, page.textureFile));
+	    textures.add(new TextureContainer(texture, page.getTextureFile()));
 	    pageToTexture.put(page, texture);
 	}
 
@@ -120,37 +124,82 @@ public class RedCompressedTextureAtlas implements Disposable {
 	}
     }
 
-    private Texture loadTexture(Page page, RedCompressedTextureAtlasData data) {
-	Texture texture = null;
-	texture = new Texture(page.textureFile, page.format, page.useMipMaps);
+    private Texture loadTextureA(Page page, RedCompressedTextureAtlasData data) {
+	Texture newTexture = null;
+	newTexture = new Texture(page.getTextureFile(), page.format, page.useMipMaps);
 	// >>
 
-	return texture;
+	return newTexture;
     }
 
-//    /**
-//     * Adds a region to the atlas. The specified texture will be disposed when
-//     * the atlas is disposed.
-//     */
-//    public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) {
-//	textures.add(texture);
-//	AtlasRegion region = new AtlasRegion(texture, x, y, width, height);
-//	region.name = name;
-//	region.originalWidth = width;
-//	region.originalHeight = height;
-//	region.index = -1;
-//	regions.add(region);
-//	return region;
-//    }
-//
-//    /**
-//     * Adds a region to the atlas. The texture for the specified region will be
-//     * disposed when the atlas is disposed.
-//     */
-//    public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
-//	return addRegion(name, textureRegion.getTexture(), textureRegion.getRegionX(), textureRegion.getRegionY(),
-//		textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
-//    }
+    private Texture loadTextureB(Page page, RedCompressedTextureAtlasData data) {
+	// GdxNativesLoader.load();
+	// >>
+
+	FileHandle textureFile = page.getTextureFile();
+	// ETC1Data etc1Data = new ETC1Data(textureFile);
+
+	// Pixmap etc1Pixmap = ETC1.decodeImage(etc1Data, Format.RGB888);
+
+	final float W = page.getWidth();
+	final float H = page.getHeight();
+	String name = textureFile.name();
+	AlphaPage alphaPage = data.alphaPages.findAlphaPage(name);
+	alphaPage.checkValid(name);
+	alphaPage.checkValid((int) W, (int) H);
+	Pixmap mergedPixmap = new Pixmap((int) W, (int) H, Format.RGBA8888);
+	mergedPixmap.setColor(0x0000ffff);
+	 mergedPixmap.fill();
+	// mergedPixmap.drawPixmap(etc1Pixmap, 0, 0);
+	Pixmap.setBlending(Pixmap.Blending.None);
+	// mergedPixmap.setBlending(Blending.SourceOver);
+	for (int x = 0; x < W; x++) {
+	    for (int y = 0; y < H; y++) {
+		final float alpha = alphaPage.getAlphaValue(x, y) * 1 + 0;
+		// final int color_int = etc1Pixmap.getPixel(x, y);
+		// Color color = new Color(color_int);
+		// color.a = alpha * 1 + 0 * 0.5f;
+		// mergedPixmap.setColor(color);
+		mergedPixmap.setColor(0xffffffff);
+		mergedPixmap.drawPixel(x, y);
+	    }
+	}
+	L.d();
+	page.format = Format.RGBA8888;
+	PixmapTextureData textureData = new PixmapTextureData(mergedPixmap, Format.RGBA8888, false, false, false);
+	final Texture newTexture = new Texture(textureData);
+	// etc1Pixmap.dispose();
+	mergedPixmap.dispose();
+
+	return newTexture;
+    }
+
+    // /**
+    // * Adds a region to the atlas. The specified texture will be disposed when
+    // * the atlas is disposed.
+    // */
+    // public AtlasRegion addRegion(String name, Texture texture, int x, int y,
+    // int width, int height) {
+    // textures.add(texture);
+    // AtlasRegion region = new AtlasRegion(texture, x, y, width, height);
+    // region.name = name;
+    // region.originalWidth = width;
+    // region.originalHeight = height;
+    // region.index = -1;
+    // regions.add(region);
+    // return region;
+    // }
+    //
+    // /**
+    // * Adds a region to the atlas. The texture for the specified region will
+    // be
+    // * disposed when the atlas is disposed.
+    // */
+    // public AtlasRegion addRegion(String name, TextureRegion textureRegion) {
+    // return addRegion(name, textureRegion.getTexture(),
+    // textureRegion.getRegionX(), textureRegion.getRegionY(),
+    // textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+    // }
 
     /** Returns all regions in the atlas. */
     public Array<AtlasRegion> getRegions() {
