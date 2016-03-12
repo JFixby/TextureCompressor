@@ -11,8 +11,6 @@ class RedETC1AtlasCompressorSettings implements ETC1AtlasCompressorSettings {
     private Color transparentColor;
     private boolean deleteOriginalPNG = false;
     private boolean removeAlpha = true;
-    private boolean zipCompressExtractedAlphaChannels = false;
-    private boolean extractAlphaChannes = false;
 
     public void setRemoveAlpha(boolean removeAlpha) {
 	this.removeAlpha = removeAlpha;
@@ -44,26 +42,6 @@ class RedETC1AtlasCompressorSettings implements ETC1AtlasCompressorSettings {
 
     public boolean removeAlpha() {
 	return removeAlpha;
-    }
-
-    @Override
-    public boolean zipCompressExtractedAlphaChannels() {
-	return zipCompressExtractedAlphaChannels;
-    }
-
-    @Override
-    public boolean extractAlphaChannes() {
-	return extractAlphaChannes;
-    }
-
-    @Override
-    public void setZipCompressExtractedAlphaChannels(boolean zipCompressExtractedAlphaChannels) {
-	this.zipCompressExtractedAlphaChannels = zipCompressExtractedAlphaChannels;
-    }
-
-    @Override
-    public void setExtractAlphaChannes(boolean extractAlphaChannes) {
-	this.extractAlphaChannes = extractAlphaChannes;
     }
 
 }

@@ -21,12 +21,6 @@ public interface ETC1AtlasCompressorSettings {
 
     boolean removeAlpha();
 
-    void setZipCompressExtractedAlphaChannels(boolean zipCompressExtractedAlphaChannels);
-
-    boolean zipCompressExtractedAlphaChannels();
-
-    void setExtractAlphaChannes(boolean extractAlphaChannes);
-
-    boolean extractAlphaChannes();
+ 
 
 }

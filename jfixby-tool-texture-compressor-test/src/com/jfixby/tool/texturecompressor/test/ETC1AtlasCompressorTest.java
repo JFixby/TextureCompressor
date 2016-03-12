@@ -34,14 +34,12 @@ import com.jfixby.cmns.api.assets.Names;
 import com.jfixby.cmns.api.collections.Mapping;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.debug.DebugTimer;
-import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.r3.api.shader.ShaderAsset;
 import com.jfixby.r3.api.shader.ShaderParameter;
-import com.jfixby.r3.fokker.api.Screen;
 import com.jfixby.r3.shader.fokker.FokkerShaderPackageReader;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
@@ -106,9 +104,9 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	    // 1f);
 	    // settings.setTransparentColor(fuxia);
 	    settings.setDeleteOriginalPNG(true);
-	    settings.setZipCompressExtractedAlphaChannels(true);
+
 	    settings.setRemoveAlpha(true);
-	    settings.setExtractAlphaChannes(true);
+
 	    L.d();
 	    ETC1AtlasCompressionResult compressionResult = ETC1Compressor.compressAtlas(settings);
 	    L.d();
@@ -222,9 +220,11 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private void activateShader() {
 	Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
 	params.print("shader params");
-//	Err.reportError("here");
-//	fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(), Screen.getScreenWidth());
-//	fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(), Screen.getScreenHeight());
+	// Err.reportError("here");
+	// fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(),
+	// Screen.getScreenWidth());
+	// fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(),
+	// Screen.getScreenHeight());
 	fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);
 	fokkerShader.setIntParameterValue(params.getValueAt(3).getName(), 0);
 	fokkerShader.setIntParameterValue(params.getValueAt(4).getName(), 1);

@@ -15,9 +15,6 @@ import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
-import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionSettings;
-import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractor;
-import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.CompressedAtlasDescriptor;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressorSettings;
@@ -59,16 +56,9 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
 	Color transparentColor = settings.getTransparentColor();
 
 	boolean removeAlpha = settings.removeAlpha();
-	boolean useZip = settings.zipCompressExtractedAlphaChannels();
-	boolean extractAlphaChannes = settings.extractAlphaChannes();
+
 	transparentColor = checkNullCollorSetDefault(transparentColor);
 	result.setTransparentColor(transparentColor);
-	AlphaChannelExtractor alphaExtractor = null;
-	if (extractAlphaChannes) {
-	    AlphaChannelExtractorSpecs alphaExtractorSpecs = ETC1Compressor.newAlphaChannelExtractorSpecs();
-	    alphaExtractorSpecs.setUseZIPCompression(useZip);
-	    alphaExtractor = ETC1Compressor.newAlphaChannelExtractor(alphaExtractorSpecs);
-	}
 
 	for (int i = 0; i < pages.size; i++) {
 	    Page page_i = pages.get(i);
@@ -77,14 +67,6 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
 	    String oldPageFileName = pageFile.getName();
 	    String pageFileName = pageFile.nameWithoutExtension();
 	    String newPageFileName = pageFileName + ".etc1";
-
-	    if (extractAlphaChannes) {
-
-		AlphaChannelExtractionSettings alpphaExtractionParams = alphaExtractor.newExtractionSettings();
-		alpphaExtractionParams.setInputFile(pageFile);
-		alpphaExtractionParams.setNameTag(newPageFileName);
-		alphaExtractor.process(alpphaExtractionParams);
-	    }
 
 	    // tell ETC1Compressor to process only related files, not the whole
 	    // folder
@@ -102,22 +84,12 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
 	    }
 
 	}
-	if (extractAlphaChannes) {
-	    byte[] bytes = alphaExtractor.serialize();
-	    String alpha_channes_file_name = atlasFile.nameWithoutExtension()
-		    + ETC1Compressor.EXTRACTED_ALPHA_CHANNELS_FILE_EXTENTION;
-	    File alpha_channes_file = atlasFolder.child(alpha_channes_file_name);
-	    alpha_channes_file.writeBytes(bytes);
-	    outputAtlas.alpha_channes_file_name = alpha_channes_file.getName();
-	    L.d("writing " + bytes.length / 1024 + " kBytes", alpha_channes_file);
-
-	}
 
 	atlasFile.writeString(atlasData);
 
 	outputAtlas.gdx_atlas_file_name = atlasFile.getName();
 	outputAtlas.compression_method = ETC1Compressor.ETC1AtlasCompression;
-	outputAtlas.alpha_channes_are_zip_compressed = useZip;
+	// outputAtlas.alpha_channes_are_zip_compressed = useZip;
 
 	outputAtlasFile.writeString(Json.serializeToString(outputAtlas));
 	result.setCompressedAtlasFile(outputAtlasFile);
@@ -147,16 +119,6 @@ public class RedETC1AtlasCompressor implements ETC1CompressorComponent {
     @Override
     public ETC1AtlasCompressionResult compress(ETC1AtlasCompressorSettings settings) throws IOException {
 	return doCompress(settings);
-    }
-
-    @Override
-    public AlphaChannelExtractor newAlphaChannelExtractor(AlphaChannelExtractorSpecs alphaExtractorSpecs) {
-	return new RedAlphaChannelExtractor(alphaExtractorSpecs);
-    }
-
-    @Override
-    public AlphaChannelExtractorSpecs newAlphaChannelExtractorSpecs() {
-	return new RedAlphaChannelExtractorSpecs();
     }
 
 }

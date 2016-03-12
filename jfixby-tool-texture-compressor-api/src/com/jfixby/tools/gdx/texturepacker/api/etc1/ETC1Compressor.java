@@ -33,14 +33,4 @@ public class ETC1Compressor {
 	return invoke().compress(atlasCompressionSettings);
     }
 
-    public static AlphaChannelExtractor newAlphaChannelExtractor(AlphaChannelExtractorSpecs alphaExtractorSpecs) {
-	return invoke().newAlphaChannelExtractor(alphaExtractorSpecs);
-    }
-
-    public static AlphaChannelExtractorSpecs newAlphaChannelExtractorSpecs() {
-	return invoke().newAlphaChannelExtractorSpecs();
-    }
-
-    
-
 }
