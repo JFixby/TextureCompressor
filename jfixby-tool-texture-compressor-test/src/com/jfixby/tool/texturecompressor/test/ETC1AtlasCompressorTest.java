@@ -34,6 +34,7 @@ import com.jfixby.cmns.api.assets.Names;
 import com.jfixby.cmns.api.collections.Mapping;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.debug.DebugTimer;
+import com.jfixby.cmns.api.err.Err;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
@@ -221,6 +222,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private void activateShader() {
 	Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
 	params.print("shader params");
+	Err.reportError("here");
 //	fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(), Screen.getScreenWidth());
 //	fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(), Screen.getScreenHeight());
 	fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);
