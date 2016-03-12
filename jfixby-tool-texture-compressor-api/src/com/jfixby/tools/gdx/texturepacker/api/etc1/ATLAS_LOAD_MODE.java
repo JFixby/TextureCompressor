@@ -1,4 +1,4 @@
-package com.jfixby.tools.gdx.texturepacker.etc1;
+package com.jfixby.tools.gdx.texturepacker.api.etc1;
 
 public enum ATLAS_LOAD_MODE {
 

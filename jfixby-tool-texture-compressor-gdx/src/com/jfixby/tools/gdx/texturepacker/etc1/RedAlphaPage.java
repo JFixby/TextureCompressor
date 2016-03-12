@@ -13,8 +13,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.jfixby.cmns.api.file.File;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaPage;
 
-class AlphaPage {
+class RedAlphaPage implements AlphaPage {
 
     @Override
     public String toString() {
@@ -33,7 +34,7 @@ class AlphaPage {
 	return this.bytes[this.pointer] / 255f;
     }
 
-    public AlphaPage(String newPageFileName, int w, int h) {
+    public RedAlphaPage(String newPageFileName, int w, int h) {
 	bytes = new int[w * h];
 	this.w = w;
 	this.h = h;
@@ -53,15 +54,15 @@ class AlphaPage {
 	obj.writeInt(h);
 	obj.writeObject(bytes);
 	obj.flush();
-//	obj.close();
+	// obj.close();
 	// obj.close();
     }
 
-    public static void writePage(OutputStream buffer, AlphaPage page) throws IOException {
+    public static void writePage(OutputStream buffer, RedAlphaPage page) throws IOException {
 	page.writeTo(buffer);
     }
 
-    public static AlphaPage readPage(InputStream input) throws IOException {
+    public static RedAlphaPage readPage(InputStream input) throws IOException {
 
 	ObjectInputStream is = new ObjectInputStream(input);
 	String newPageFileName;
@@ -71,7 +72,7 @@ class AlphaPage {
 	    int w = is.readInt();
 	    int h = is.readInt();
 	    int[] bytes = (int[]) is.readObject();
-	    AlphaPage page = new AlphaPage(newPageFileName, w, h);
+	    RedAlphaPage page = new RedAlphaPage(newPageFileName, w, h);
 	    page.bytes = bytes;
 	    return page;
 	} catch (ClassNotFoundException e) {

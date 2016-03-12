@@ -47,18 +47,18 @@ import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.red.engine.core.unit.shader.RedFokkerShader;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
+import com.jfixby.redtriplane.fokker.assets.atlas.etc1.FokkerCompressedAtlas;
+import com.jfixby.redtriplane.fokker.assets.atlas.etc1.FokkerCompressedAtlasReader;
+import com.jfixby.redtriplane.fokker.assets.atlas.etc1.FokkerCompressedTextureAtlas;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.AtlasPackingResult;
 import com.jfixby.tools.gdx.texturepacker.api.Packer;
 import com.jfixby.tools.gdx.texturepacker.api.TexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.TexturePackingSpecs;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.ATLAS_LOAD_MODE;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressorSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
-import com.jfixby.tools.gdx.texturepacker.etc1.ATLAS_LOAD_MODE;
-import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlas;
-import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedAtlasReader;
-import com.jfixby.tools.gdx.texturepacker.etc1.RedCompressedTextureAtlas;
 import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
 
 public class ETC1AtlasCompressorTest implements ApplicationListener {
@@ -149,9 +149,9 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private TextureAtlas regularAtlas;
     private Array<Sprite> regularSprites;
 
-    private RedCompressedTextureAtlas etc1Atlas;
+    private FokkerCompressedTextureAtlas etc1Atlas;
     private Array<Sprite> etc1Sprites;
-    private RedCompressedAtlas compressed_atlas;
+    private FokkerCompressedAtlas compressed_atlas;
     private ShaderProgram gdxShader;
 
     private RedFokkerShader fokkerShader;
@@ -167,7 +167,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	regularSprites = regularAtlas.createSprites();
 	timer.printTime("Regular Texture Atlas");
 
-	RedCompressedAtlasReader atlas_reader = new RedCompressedAtlasReader();
+	FokkerCompressedAtlasReader atlas_reader = new FokkerCompressedAtlasReader();
 
 	try {
 	    timer.reset();
@@ -222,7 +222,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private void activateShader() {
 	Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
 	params.print("shader params");
-	Err.reportError("here");
+//	Err.reportError("here");
 //	fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(), Screen.getScreenWidth());
 //	fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(), Screen.getScreenHeight());
 	fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);

@@ -16,20 +16,25 @@ import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.io.IO;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelDeserealizator;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractionSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractor;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaChannelExtractorSpecs;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.AlphaPages;
 
-public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
+public class RedAlphaChannelExtractor implements AlphaChannelExtractor, AlphaChannelDeserealizator {
 
     private Color transparentColor;
-    final AlphaPages pages = new AlphaPages();
+    final RedAlphaPages pages = new RedAlphaPages();
     private boolean zip;
 
     public RedAlphaChannelExtractor(AlphaChannelExtractorSpecs alphaExtractorSpecs) {
 	zip = alphaExtractorSpecs.useZIPCompression();
 
+    }
+
+    public RedAlphaChannelExtractor() {
     }
 
     private static void extractAlphaChannel(File file, RedAlphaChannelExtractor alphaInfo, String newPageFileName) {
@@ -54,7 +59,7 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
     }
 
     public void beginFile(String newPageFileName, int w, int h) {
-	AlphaPage newPage = new AlphaPage(newPageFileName, w, h);
+	RedAlphaPage newPage = new RedAlphaPage(newPageFileName, w, h);
 	pages.add(newPage);
     }
 
@@ -98,14 +103,14 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 	}
 	IO.writeInt(os, pages.size());
 	for (int i = 0; i < pages.size(); i++) {
-	    AlphaPage.writePage(os, pages.get(i));
+	    RedAlphaPage.writePage(os, pages.get(i));
 	}
 	os.close();
 	buffer.close();
 	return buffer.toByteArray();
     }
 
-    public static AlphaPages deserialize(byte[] alphas_bytes, boolean zip) throws IOException {
+    public RedAlphaPages deserialize(byte[] alphas_bytes, boolean zip) throws IOException {
 
 	InputStream is = null;
 
@@ -116,10 +121,10 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 	    is = new GZIPInputStream(is);
 	}
 
-	AlphaPages pages = new AlphaPages();
+	RedAlphaPages pages = new RedAlphaPages();
 	int pagesNumber = IO.readInt(is);
 	for (int i = 0; i < pagesNumber; i++) {
-	    AlphaPage page = AlphaPage.readPage(is);
+	    RedAlphaPage page = RedAlphaPage.readPage(is);
 	    pages.add(page);
 	}
 	return pages;
@@ -133,7 +138,7 @@ public class RedAlphaChannelExtractor implements AlphaChannelExtractor {
 
     public static void savePagesAsPNG(File folder, AlphaPages pages) {
 	for (int i = 0; i < pages.size(); i++) {
-	    AlphaPage page = pages.get(i);
+	    RedAlphaPage page = (RedAlphaPage) pages.get(i);
 	    File png_file = folder.child(page.getName() + "-alpha.png");
 	    page.saveAsPng(png_file);
 	}
