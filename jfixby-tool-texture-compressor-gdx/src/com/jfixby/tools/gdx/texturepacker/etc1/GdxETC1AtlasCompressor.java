@@ -50,7 +50,7 @@ public class GdxETC1AtlasCompressor {
 
 	    // tell ETC1Compressor to process only related files, not the whole
 	    // folder
-	    ETC1Compressor.compressFile(pageFile, compressedPageFile, null, false);
+	    ETC1Compressor.compressFile(pageFile, compressedPageFile, null, !false);
 
 	    atlasData = atlasData.replaceAll(oldPageFileName, newPageFileName);
 
