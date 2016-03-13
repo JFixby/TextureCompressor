@@ -180,12 +180,12 @@ public class GdxETC1 implements ETC1CompressorComponent {
 
     @Override
     public ETC1AtlasCompressionParams newAtlasCompressionParams() {
-	return new GdxETC1AtlasCompressionParams();
+	return new RedETC1AtlasCompressionParams();
     }
 
     @Override
     public ETC1AtlasCompressionResult compressAtlas(ETC1AtlasCompressionParams params) throws IOException {
-	return GdxETC1AtlasCompressor.doCompress(params);
+	return RedETC1AtlasCompressor.doCompress(params);
     }
 
 }

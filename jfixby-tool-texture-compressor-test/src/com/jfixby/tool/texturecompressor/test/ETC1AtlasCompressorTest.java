@@ -25,25 +25,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.jfixby.cmns.adopted.gdx.json.GdxJson;
-import com.jfixby.cmns.api.assets.AssetID;
-import com.jfixby.cmns.api.assets.Names;
-import com.jfixby.cmns.api.collections.Mapping;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.debug.DebugTimer;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
-import com.jfixby.r3.api.shader.ShaderAsset;
-import com.jfixby.r3.api.shader.ShaderParameter;
-import com.jfixby.r3.shader.fokker.FokkerShaderPackageReader;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
-import com.jfixby.red.engine.core.unit.shader.RedFokkerShader;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.AtlasPackingResult;
@@ -96,18 +88,10 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	if (COMPRESS) {
 	    ETC1AtlasCompressionParams settings = ETC1Compressor.newAtlasCompressionSettings();
 	    settings.setAtlasFile(etc1AtlasFile);
-	    // Color fuxia = new com.badlogic.gdx.graphics.Color(1f, 0f, 1f,
-	    // 1f);
-	    // settings.setTransparentColor(fuxia);
 	    settings.setDeleteOriginalPNG(true);
-
-	    L.d();
 	    ETC1AtlasCompressionResult compressionResult = ETC1Compressor.compressAtlas(settings);
-	    L.d();
 	    compressionResult.print();
-
 	    compressedAtlasFile = compressionResult.getCompressedAtlasFile();
-
 	}
 
 	L.d("Showing compressed sprites");
@@ -146,7 +130,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     // private FokkerCompressedAtlas compressed_atlas;
     // private ShaderProgram gdxShader;
 
-    private RedFokkerShader fokkerShader;
+//    private RedFokkerShader fokkerShader;
 
     public void create() {
 	batch = new SpriteBatch();
@@ -198,41 +182,42 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
     }
 
-    private ShaderProgram loadShader() {
-
-	FokkerShaderPackageReader reader = new FokkerShaderPackageReader();
-
-	File shader_root_file = LocalFileSystem.newFile(
-		"D:\\[DATA]\\[RED-ASSETS]\\Art-Private\\tinto-assets\\content\\bank-tinto\\com.jfixby.r3.fokker.shader.photoshop\\content\\r3.shader.info");
-	try {
-	    reader.readRootFile(shader_root_file);
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-
-	AssetID asset_id = Names.newAssetID("com.jfixby.r3.fokker.shader.photoshop.test");
-	ShaderAsset asset = reader.findStructure(asset_id);
-	fokkerShader = new RedFokkerShader(asset);
-
-	return (ShaderProgram) fokkerShader.getGdxShaderProgram();
-    }
-
-    private void activateShader() {
-	Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
-	params.print("shader params");
-	// Err.reportError("here");
-	// fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(),
-	// Screen.getScreenWidth());
-	// fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(),
-	// Screen.getScreenHeight());
-	fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);
-	fokkerShader.setIntParameterValue(params.getValueAt(3).getName(), 0);
-	fokkerShader.setIntParameterValue(params.getValueAt(4).getName(), 1);
-
-	// shader.setFloatParameterValue("test", 0.5);
-
-	fokkerShader.setupValues();
-    }
+    // private ShaderProgram loadShader() {
+    //
+    // FokkerShaderPackageReader reader = new FokkerShaderPackageReader();
+    //
+    // File shader_root_file = LocalFileSystem.newFile(
+    // "D:\\[DATA]\\[RED-ASSETS]\\Art-Private\\tinto-assets\\content\\bank-tinto\\com.jfixby.r3.fokker.shader.photoshop\\content\\r3.shader.info");
+    // try {
+    // reader.readRootFile(shader_root_file);
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // AssetID asset_id =
+    // Names.newAssetID("com.jfixby.r3.fokker.shader.photoshop.test");
+    // ShaderAsset asset = reader.findStructure(asset_id);
+    // fokkerShader = new RedFokkerShader(asset);
+    //
+    // return (ShaderProgram) fokkerShader.getGdxShaderProgram();
+    // }
+    //
+    // private void activateShader() {
+    // Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
+    // params.print("shader params");
+    // // Err.reportError("here");
+    // // fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(),
+    // // Screen.getScreenWidth());
+    // // fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(),
+    // // Screen.getScreenHeight());
+    // fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);
+    // fokkerShader.setIntParameterValue(params.getValueAt(3).getName(), 0);
+    // fokkerShader.setIntParameterValue(params.getValueAt(4).getName(), 1);
+    //
+    // // shader.setFloatParameterValue("test", 0.5);
+    //
+    // fokkerShader.setupValues();
+    // }
 
     public void render() {
 	final float gray = 0.5f;

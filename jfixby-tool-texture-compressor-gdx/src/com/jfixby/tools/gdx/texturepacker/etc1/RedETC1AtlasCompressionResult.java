@@ -1,16 +1,18 @@
 
 package com.jfixby.tools.gdx.texturepacker.etc1;
 
-import java.util.ArrayList;
-
+import com.jfixby.cmns.api.collections.Collection;
+import com.jfixby.cmns.api.collections.Collections;
+import com.jfixby.cmns.api.collections.List;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.TextureFileRenaming;
 
 class RedETC1AtlasCompressionResult implements ETC1AtlasCompressionResult {
 
     private File gdxAtlas;
-    private ArrayList<RedTextureFileRenaming> textures = new ArrayList<RedTextureFileRenaming>();
+    private List<TextureFileRenaming> textures = Collections.newList();
 
     private File compressedAtlasFile;
 
@@ -28,10 +30,10 @@ class RedETC1AtlasCompressionResult implements ETC1AtlasCompressionResult {
     }
 
     public void print() {
-	L.d("AtlasETC1CompressionResult[" + textures.size() + "]");
+	L.d("ETC1AtlasCompressionResult[" + textures.size() + "]");
 	L.d(" gdx atlas file", gdxAtlas);
 	for (int i = 0; i < textures.size(); i++) {
-	    RedTextureFileRenaming renaming = textures.get(i);
+	    TextureFileRenaming renaming = textures.getElementAt(i);
 	    L.d("   " + i, renaming);
 	}
 
@@ -44,6 +46,11 @@ class RedETC1AtlasCompressionResult implements ETC1AtlasCompressionResult {
     @Override
     public File getCompressedAtlasFile() {
 	return this.compressedAtlasFile;
+    }
+
+    @Override
+    public Collection<TextureFileRenaming> listRenamings() {
+	return textures;
     }
 
 }

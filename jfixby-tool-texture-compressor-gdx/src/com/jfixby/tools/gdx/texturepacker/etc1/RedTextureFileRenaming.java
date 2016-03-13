@@ -1,18 +1,20 @@
 package com.jfixby.tools.gdx.texturepacker.etc1;
 
-class RedTextureFileRenaming {
+import com.jfixby.tools.gdx.texturepacker.api.etc1.TextureFileRenaming;
+
+class RedTextureFileRenaming implements TextureFileRenaming {
 
     private String oldPageFileName;
     private String newPageFileName;
 
     public RedTextureFileRenaming(String oldPageFileName, String newPageFileName) {
-        this.oldPageFileName = oldPageFileName;
-        this.newPageFileName = newPageFileName;
+	this.oldPageFileName = oldPageFileName;
+	this.newPageFileName = newPageFileName;
     }
 
     @Override
     public String toString() {
-        return oldPageFileName + " :-> " + newPageFileName;
+	return oldPageFileName + " :-> " + newPageFileName;
     }
 
 }

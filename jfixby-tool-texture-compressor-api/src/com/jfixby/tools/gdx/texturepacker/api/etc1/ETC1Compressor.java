@@ -14,6 +14,9 @@ public class ETC1Compressor {
     // public static final String ETC1AtlasCompression =
     // "R3.libGDX.ETC1AtlasCompression";
 
+    public static final String ALPHA_CHANNEL_FILE_EXTENTION = ".zipng";
+    
+    
     static private ComponentInstaller<ETC1CompressorComponent> componentInstaller = new ComponentInstaller<ETC1CompressorComponent>(
 	    "ETC1Compressor");
 
