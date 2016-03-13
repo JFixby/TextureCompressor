@@ -45,19 +45,15 @@ import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.red.engine.core.unit.shader.RedFokkerShader;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
-import com.jfixby.redtriplane.fokker.assets.atlas.etc1.FokkerCompressedAtlas;
-import com.jfixby.redtriplane.fokker.assets.atlas.etc1.FokkerCompressedAtlasReader;
-import com.jfixby.redtriplane.fokker.assets.atlas.etc1.FokkerCompressedTextureAtlas;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.AtlasPackingResult;
 import com.jfixby.tools.gdx.texturepacker.api.Packer;
 import com.jfixby.tools.gdx.texturepacker.api.TexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.TexturePackingSpecs;
-import com.jfixby.tools.gdx.texturepacker.api.etc1.ATLAS_LOAD_MODE;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionParams;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
-import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressorSettings;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
-import com.jfixby.tools.gdx.texturepacker.etc1.RedETC1AtlasCompressor;
+import com.jfixby.tools.gdx.texturepacker.etc1.GdxETC1;
 
 public class ETC1AtlasCompressorTest implements ApplicationListener {
 
@@ -72,7 +68,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     public static void main(String[] args) throws Exception {
 	DesktopAssembler.setup();
 	TexturePacker.installComponent(new GdxTexturePacker());
-	ETC1Compressor.installComponent(new RedETC1AtlasCompressor());
+	ETC1Compressor.installComponent(new GdxETC1());
 	Json.installComponent(new GdxJson());
 	RedResourcesManager res_manager = new RedResourcesManager();
 	ResourcesManager.installComponent(res_manager);
@@ -98,14 +94,12 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	boolean COMPRESS = true;
 
 	if (COMPRESS) {
-	    ETC1AtlasCompressorSettings settings = ETC1Compressor.newAtlasCompressionSettings();
+	    ETC1AtlasCompressionParams settings = ETC1Compressor.newAtlasCompressionSettings();
 	    settings.setAtlasFile(etc1AtlasFile);
 	    // Color fuxia = new com.badlogic.gdx.graphics.Color(1f, 0f, 1f,
 	    // 1f);
 	    // settings.setTransparentColor(fuxia);
 	    settings.setDeleteOriginalPNG(true);
-
-	    settings.setRemoveAlpha(true);
 
 	    L.d();
 	    ETC1AtlasCompressionResult compressionResult = ETC1Compressor.compressAtlas(settings);
@@ -147,16 +141,16 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private TextureAtlas regularAtlas;
     private Array<Sprite> regularSprites;
 
-    private FokkerCompressedTextureAtlas etc1Atlas;
+    private TextureAtlas etc1Atlas;
     private Array<Sprite> etc1Sprites;
-    private FokkerCompressedAtlas compressed_atlas;
-    private ShaderProgram gdxShader;
+    // private FokkerCompressedAtlas compressed_atlas;
+    // private ShaderProgram gdxShader;
 
     private RedFokkerShader fokkerShader;
 
     public void create() {
 	batch = new SpriteBatch();
-	gdxShader = loadShader();
+	// gdxShader = loadShader();
 
 	DebugTimer timer = Debug.newTimer();
 
@@ -165,19 +159,25 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	regularSprites = regularAtlas.createSprites();
 	timer.printTime("Regular Texture Atlas");
 
-	FokkerCompressedAtlasReader atlas_reader = new FokkerCompressedAtlasReader();
+	timer.reset();
+	etc1Atlas = new TextureAtlas(this.compressedAtlasFile.toJavaFile().getAbsolutePath());
+	etc1Sprites = etc1Atlas.createSprites();
+	timer.printTime("Regular Texture Atlas");
 
-	try {
-	    timer.reset();
-	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
-	    compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER);
-	    compressed_atlas.load();
-	    etc1Atlas = compressed_atlas.getGdxAtlas();
-	    etc1Sprites = etc1Atlas.createSprites();
-	    timer.printTime("ETC1 Texture Atlas");
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+	// FokkerCompressedAtlasReader atlas_reader = new
+	// FokkerCompressedAtlasReader();
+	//
+	// try {
+	// timer.reset();
+	// compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
+	// compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER);
+	// compressed_atlas.load();
+	// etc1Atlas = compressed_atlas.getGdxAtlas();
+	// etc1Sprites = etc1Atlas.createSprites();
+	// timer.printTime("ETC1 Texture Atlas");
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
 
 	float x = 10;
 	float y = 10;
@@ -246,11 +246,12 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	}
 	batch.end();
 
-	if (compressed_atlas.getLoadMode() == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
-	    activateShader();
-	    batch.setShader(gdxShader);
-
-	}
+	// if (compressed_atlas.getLoadMode() ==
+	// ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
+	// activateShader();
+	// batch.setShader(gdxShader);
+	//
+	// }
 	batch.begin();
 	for (Sprite sprite : etc1Sprites) {
 	    sprite.draw(batch);

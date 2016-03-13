@@ -3,7 +3,6 @@ package com.jfixby.tools.gdx.texturepacker.etc1;
 
 import java.util.ArrayList;
 
-import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
@@ -13,7 +12,6 @@ class RedETC1AtlasCompressionResult implements ETC1AtlasCompressionResult {
     private File gdxAtlas;
     private ArrayList<RedTextureFileRenaming> textures = new ArrayList<RedTextureFileRenaming>();
 
-    private Color transparentColor;
     private File compressedAtlasFile;
 
     public void setGdxAtlasFile(File atlas) {
@@ -24,10 +22,6 @@ class RedETC1AtlasCompressionResult implements ETC1AtlasCompressionResult {
 	this.compressedAtlasFile = compressedAtlasFile;
     }
 
-    public void setTransparentColor(Color transparentColor) {
-	this.transparentColor = transparentColor;
-    }
-
     public void addCompressedTextureNames(String oldPageFileName, String newPageFileName) {
 	RedTextureFileRenaming renaming = new RedTextureFileRenaming(oldPageFileName, newPageFileName);
 	textures.add(renaming);
@@ -36,7 +30,6 @@ class RedETC1AtlasCompressionResult implements ETC1AtlasCompressionResult {
     public void print() {
 	L.d("AtlasETC1CompressionResult[" + textures.size() + "]");
 	L.d(" gdx atlas file", gdxAtlas);
-	L.d(" transparent color", transparentColor);
 	for (int i = 0; i < textures.size(); i++) {
 	    RedTextureFileRenaming renaming = textures.get(i);
 	    L.d("   " + i, renaming);
