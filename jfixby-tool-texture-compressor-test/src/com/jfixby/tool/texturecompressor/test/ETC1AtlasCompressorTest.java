@@ -260,10 +260,12 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	final float gray = 0.5f;
 	Gdx.gl.glClearColor(gray, gray, gray, 1);
 	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+	float alpha = 0;
+	alpha = alpha();
 	int x = 20, y = 20;
 	batch.begin();
 	for (Sprite sprite : regularSprites) {
+	    sprite.setAlpha(alpha);
 	    sprite.draw(batch);
 	}
 	batch.end();
@@ -276,7 +278,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	    if (compressed_atlas.getLoadMode() == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
 
 		// final float alpha = 0.5f;
-		fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), sprite.getAplha());
+		fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), alpha);
 		fokkerShader.setupValues();
 
 		batch.setShader(gdxShader);
@@ -298,6 +300,10 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	    batch.setShader(null);
 	}
 
+    }
+
+    private float alpha() {
+	return (float) (0.5 + Math.sin((System.currentTimeMillis() / 1000d) * 1d) / 2) / 2f;
     }
 
     static final int VERTEX_SIZE = 2 + 1 + 2;
