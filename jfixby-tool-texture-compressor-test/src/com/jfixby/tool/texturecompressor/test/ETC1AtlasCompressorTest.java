@@ -22,6 +22,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -45,9 +46,10 @@ import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.red.engine.core.unit.shader.RedFokkerShader;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
-import com.jfixby.redtriplane.fokker.assets.atlas.GdxTextureAtlas;
 import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedFokkerAtlas;
 import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedGdxTextureAtlas;
+import com.jfixby.redtriplane.fokker.assets.atlas.compressed.GdxSprite;
+import com.jfixby.redtriplane.fokker.assets.atlas.compressed.GdxTextureAtlas;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.AtlasPackingResult;
 import com.jfixby.tools.gdx.texturepacker.api.Packer;
@@ -138,14 +140,15 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
     private Array<Sprite> regularSprites;
 
     private CompressedGdxTextureAtlas etc1Atlas;
-    private Array<Sprite> etc1Sprites;
-    private Array<Sprite> etc1AlphaSprites;
+    private Array<GdxSprite> etc1Sprites;
+    private Array<GdxSprite> etc1AlphaSprites;
     // private FokkerCompressedAtlas compressed_atlas;
     private ShaderProgram gdxShader;
 
     private RedFokkerShader fokkerShader;
 
     private CompressedFokkerAtlas compressed_atlas;
+    private Mapping<String, ShaderParameter> params;
 
     public void create() {
 	batch = new SpriteBatch();
@@ -160,7 +163,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
 	timer.reset();
 	compressed_atlas = new CompressedFokkerAtlas(this.compressedAtlasFile);
-	
+
 	compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER);
 	try {
 	    compressed_atlas.load(false);
@@ -169,12 +172,12 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	    Sys.exit();
 	}
 	timer.printTime("Compressed Texture Atlas");
-	Sys.exit();
-	this.etc1Atlas = compressed_atlas.getGdxAtlas();
+	// Sys.exit();
+	this.etc1Atlas = this.compressed_atlas.getGdxAtlas();
 	// etc1Atlas = new
 	// GdxTextureAtlas(this.compressedAtlasFile.toJavaFile().getAbsolutePath());
-	etc1Sprites = etc1Atlas.createSprites();
-	etc1AlphaSprites = etc1Atlas.createAlphaSprites();
+	this.etc1Sprites = this.etc1Atlas.createSprites();
+	this.etc1AlphaSprites = this.etc1Atlas.createAlphaSprites();
 
 	// FokkerCompressedAtlasReader atlas_reader = new
 	// FokkerCompressedAtlasReader();
@@ -193,18 +196,21 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
 	float x = 10;
 	float y = 10;
+	float alpha = 0.3f;
 	for (int i = 0; i < regularSprites.size; i++) {
 	    Sprite sprite = regularSprites.get(i);
 	    sprite.setX(x);
 	    sprite.setY(10);
+	    sprite.setAlpha(alpha);
 	    x = x + sprite.getWidth() * 0.9f;
 	    y = Math.max(y, sprite.getHeight());
 	}
 	x = 10;
 	for (int i = 0; i < etc1Sprites.size; i++) {
-	    Sprite sprite = etc1Sprites.get(i);
+	    GdxSprite sprite = etc1Sprites.get(i);
 	    sprite.setX(x);
 	    sprite.setY(y * 1.1f);
+	    sprite.setAlpha(alpha);
 	    x = x + sprite.getWidth() * 0.9f;
 	}
 
@@ -226,11 +232,13 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	ShaderAsset asset = reader.findStructure(asset_id);
 	fokkerShader = new RedFokkerShader(asset);
 
+	activateShader();
+
 	return (ShaderProgram) fokkerShader.getGdxShaderProgram();
     }
 
     private void activateShader() {
-	Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
+	params = fokkerShader.listParameters();
 	params.print("shader params");
 	// Err.reportError("here");
 	// fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(),
@@ -260,23 +268,40 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	}
 	batch.end();
 
-	if (compressed_atlas.getLoadMode() == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
-	    activateShader();
-	    batch.setShader(gdxShader);
-
-	}
-	batch.begin();
 	for (int i = 0; i < etc1Sprites.size; i++) {
-	    final Sprite sprite = etc1Sprites.get(i);
-	    final Sprite alphaSprite = etc1AlphaSprites.get(i);
+
+	    final GdxSprite sprite = etc1Sprites.get(i);
+	    final GdxSprite alphaSprite = etc1AlphaSprites.get(i);
+
+	    if (compressed_atlas.getLoadMode() == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
+
+		// final float alpha = 0.5f;
+		fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), sprite.getAplha());
+		fokkerShader.setupValues();
+
+		batch.setShader(gdxShader);
+
+	    }
+
+	    batch.begin();
+
 	    alphaSprite.getTexture().bind(2);
 	    // alphaSprite.getTexture().bind(1);
 	    sprite.getTexture().bind(0);
+
+	    final Texture texture = sprite.getTexture();
+	    batch.draw(texture, sprite.getVertices(), 0, SPRITE_SIZE);
+
 	    sprite.draw(batch);
+
+	    batch.end();
+	    batch.setShader(null);
 	}
-	batch.end();
-	batch.setShader(null);
+
     }
+
+    static final int VERTEX_SIZE = 2 + 1 + 2;
+    static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
     public void resize(int width, int height) {
 	float m = 0.6f;
