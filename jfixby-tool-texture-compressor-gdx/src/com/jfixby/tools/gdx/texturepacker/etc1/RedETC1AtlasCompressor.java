@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData.Page;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxNativesLoader;
+import com.jfixby.cmns.adopted.gdx.atlas.CompressedFokkerAtlas;
 import com.jfixby.cmns.adopted.gdx.fs.ToGdxFileAdaptor;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.desktop.ImageAWT;
@@ -53,7 +54,7 @@ public class RedETC1AtlasCompressor {
 	    String oldPageFileName = pageFile.getName();
 	    String pageFileName = pageFile.nameWithoutExtension();
 	    String etc1PageFileName = pageFileName + ".etc1";
-	    String alphaChannelname = pageFileName + ETC1Compressor.ALPHA_CHANNEL_FILE_EXTENTION;
+	    String alphaChannelname = pageFileName + CompressedFokkerAtlas.ALPHA_CHANNEL_FILE_EXTENTION;
 	    File compressedPageFile = pageFile.parent().child(etc1PageFileName);
 	    File alphaChannelFile = pageFile.parent().child(alphaChannelname);
 	    splitAndSaveAlphaChannel(pageFile, alphaChannelFile);

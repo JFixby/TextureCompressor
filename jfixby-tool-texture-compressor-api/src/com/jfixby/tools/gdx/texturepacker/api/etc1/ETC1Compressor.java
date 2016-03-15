@@ -7,16 +7,7 @@ import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.file.File;
 
 public class ETC1Compressor {
-    // public static final String COMPRESSED_ATLAS_FILE_EXTENTION =
-    // ".r3-compressed-atlas";
-    // public static final String EXTRACTED_ALPHA_CHANNELS_FILE_EXTENTION =
-    // ".r3-alpha";
-    // public static final String ETC1AtlasCompression =
-    // "R3.libGDX.ETC1AtlasCompression";
 
-    public static final String ALPHA_CHANNEL_FILE_EXTENTION = ".zipng";
-    
-    
     static private ComponentInstaller<ETC1CompressorComponent> componentInstaller = new ComponentInstaller<ETC1CompressorComponent>(
 	    "ETC1Compressor");
 
