@@ -155,25 +155,26 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
 	timer.reset();
 	regularAtlas = new GdxTextureAtlas(this.regularAtlasFile.toJavaFile().getAbsolutePath());
-	regularSprites = regularAtlas.createSprites();
 	timer.printTime("Regular Texture Atlas");
+	regularSprites = regularAtlas.createSprites();
 
 	timer.reset();
 	compressed_atlas = new CompressedFokkerAtlas(this.compressedAtlasFile);
+	
 	compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER);
 	try {
-	    compressed_atlas.load();
+	    compressed_atlas.load(false);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    Sys.exit();
 	}
-
+	timer.printTime("Compressed Texture Atlas");
+	Sys.exit();
 	this.etc1Atlas = compressed_atlas.getGdxAtlas();
 	// etc1Atlas = new
 	// GdxTextureAtlas(this.compressedAtlasFile.toJavaFile().getAbsolutePath());
 	etc1Sprites = etc1Atlas.createSprites();
 	etc1AlphaSprites = etc1Atlas.createAlphaSprites();
-	timer.printTime("Regular Texture Atlas");
 
 	// FokkerCompressedAtlasReader atlas_reader = new
 	// FokkerCompressedAtlasReader();
@@ -240,10 +241,9 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	fokkerShader.setIntParameterValue(params.getValueAt(3).getName(), 0);
 	fokkerShader.setIntParameterValue(params.getValueAt(4).getName(), 1);
 	fokkerShader.setIntParameterValue(params.getValueAt(5).getName(), 2);
-	fokkerShader.setFloatParameterValue(params.getValueAt(6).getName(), RedFokkerShader.TRUE);
 
 	// shader.setFloatParameterValue("test", 0.5);
-	// fokkerShader.printParameterValues();
+	fokkerShader.printParameterValues();
 	// Sys.exit();
 	fokkerShader.setupValues();
     }
