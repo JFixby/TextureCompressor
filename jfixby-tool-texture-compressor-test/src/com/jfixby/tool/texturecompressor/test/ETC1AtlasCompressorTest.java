@@ -24,7 +24,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.jfixby.cmns.adopted.gdx.json.GdxJson;
@@ -34,9 +33,14 @@ import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
+import com.jfixby.cmns.api.sys.Sys;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
+import com.jfixby.redtriplane.fokker.assets.atlas.GdxTextureAtlas;
+import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedFokkerAtlas;
+import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedFokkerAtlasReader;
+import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedGdxTextureAtlas;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.AtlasPackingResult;
 import com.jfixby.tools.gdx.texturepacker.api.Packer;
@@ -122,15 +126,17 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
     SpriteBatch batch;
 
-    private TextureAtlas regularAtlas;
+    private GdxTextureAtlas regularAtlas;
     private Array<Sprite> regularSprites;
 
-    private TextureAtlas etc1Atlas;
+    private CompressedGdxTextureAtlas etc1Atlas;
     private Array<Sprite> etc1Sprites;
     // private FokkerCompressedAtlas compressed_atlas;
     // private ShaderProgram gdxShader;
 
-//    private RedFokkerShader fokkerShader;
+    // private RedFokkerShader fokkerShader;
+    final CompressedFokkerAtlasReader atlas_reader = new CompressedFokkerAtlasReader();
+    private CompressedFokkerAtlas compressed_atlas;
 
     public void create() {
 	batch = new SpriteBatch();
@@ -139,13 +145,23 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	DebugTimer timer = Debug.newTimer();
 
 	timer.reset();
-	regularAtlas = new TextureAtlas(this.regularAtlasFile.toJavaFile().getAbsolutePath());
+	regularAtlas = new GdxTextureAtlas(this.regularAtlasFile.toJavaFile().getAbsolutePath());
 	regularSprites = regularAtlas.createSprites();
 	timer.printTime("Regular Texture Atlas");
 
 	timer.reset();
-	etc1Atlas = new TextureAtlas(this.compressedAtlasFile.toJavaFile().getAbsolutePath());
-	etc1Sprites = etc1Atlas.createSprites();
+	try {
+	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
+
+	} catch (IOException e) {
+	    e.printStackTrace();
+	    Sys.exit();
+	}
+	this.etc1Atlas = compressed_atlas.getGdxAtlas();
+	// etc1Atlas = new
+	// GdxTextureAtlas(this.compressedAtlasFile.toJavaFile().getAbsolutePath());
+//	etc1Sprites = etc1Atlas.createSprites();
+	etc1Sprites = etc1Atlas.createAlphaSprites();
 	timer.printTime("Regular Texture Atlas");
 
 	// FokkerCompressedAtlasReader atlas_reader = new

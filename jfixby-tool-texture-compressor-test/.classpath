@@ -34,5 +34,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-packer-gdx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rana-asset-red"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
