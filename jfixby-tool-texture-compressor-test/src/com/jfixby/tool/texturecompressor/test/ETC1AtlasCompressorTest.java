@@ -24,9 +24,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.jfixby.cmns.adopted.gdx.json.GdxJson;
+import com.jfixby.cmns.api.assets.AssetID;
+import com.jfixby.cmns.api.assets.Names;
+import com.jfixby.cmns.api.collections.Mapping;
 import com.jfixby.cmns.api.debug.Debug;
 import com.jfixby.cmns.api.debug.DebugTimer;
 import com.jfixby.cmns.api.file.File;
@@ -34,18 +38,22 @@ import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.json.Json;
 import com.jfixby.cmns.api.log.L;
 import com.jfixby.cmns.api.sys.Sys;
+import com.jfixby.r3.api.shader.ShaderAsset;
+import com.jfixby.r3.api.shader.ShaderParameter;
+import com.jfixby.r3.shader.fokker.FokkerShaderPackageReader;
 import com.jfixby.rana.api.pkg.ResourcesManager;
 import com.jfixby.red.desktop.DesktopAssembler;
+import com.jfixby.red.engine.core.unit.shader.RedFokkerShader;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
 import com.jfixby.redtriplane.fokker.assets.atlas.GdxTextureAtlas;
 import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedFokkerAtlas;
-import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedFokkerAtlasReader;
 import com.jfixby.redtriplane.fokker.assets.atlas.compressed.CompressedGdxTextureAtlas;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.AtlasPackingResult;
 import com.jfixby.tools.gdx.texturepacker.api.Packer;
 import com.jfixby.tools.gdx.texturepacker.api.TexturePacker;
 import com.jfixby.tools.gdx.texturepacker.api.TexturePackingSpecs;
+import com.jfixby.tools.gdx.texturepacker.api.etc1.ATLAS_LOAD_MODE;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionParams;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1AtlasCompressionResult;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
@@ -131,16 +139,17 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
     private CompressedGdxTextureAtlas etc1Atlas;
     private Array<Sprite> etc1Sprites;
+    private Array<Sprite> etc1AlphaSprites;
     // private FokkerCompressedAtlas compressed_atlas;
-    // private ShaderProgram gdxShader;
+    private ShaderProgram gdxShader;
 
-    // private RedFokkerShader fokkerShader;
-    final CompressedFokkerAtlasReader atlas_reader = new CompressedFokkerAtlasReader();
+    private RedFokkerShader fokkerShader;
+
     private CompressedFokkerAtlas compressed_atlas;
 
     public void create() {
 	batch = new SpriteBatch();
-	// gdxShader = loadShader();
+	gdxShader = loadShader();
 
 	DebugTimer timer = Debug.newTimer();
 
@@ -150,18 +159,20 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	timer.printTime("Regular Texture Atlas");
 
 	timer.reset();
+	compressed_atlas = new CompressedFokkerAtlas(this.compressedAtlasFile);
+	compressed_atlas.setLoadMode(ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER);
 	try {
-	    compressed_atlas = atlas_reader.read(this.compressedAtlasFile);
-
+	    compressed_atlas.load();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    Sys.exit();
 	}
+
 	this.etc1Atlas = compressed_atlas.getGdxAtlas();
 	// etc1Atlas = new
 	// GdxTextureAtlas(this.compressedAtlasFile.toJavaFile().getAbsolutePath());
-//	etc1Sprites = etc1Atlas.createSprites();
-	etc1Sprites = etc1Atlas.createAlphaSprites();
+	etc1Sprites = etc1Atlas.createSprites();
+	etc1AlphaSprites = etc1Atlas.createAlphaSprites();
 	timer.printTime("Regular Texture Atlas");
 
 	// FokkerCompressedAtlasReader atlas_reader = new
@@ -198,42 +209,44 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 
     }
 
-    // private ShaderProgram loadShader() {
-    //
-    // FokkerShaderPackageReader reader = new FokkerShaderPackageReader();
-    //
-    // File shader_root_file = LocalFileSystem.newFile(
-    // "D:\\[DATA]\\[RED-ASSETS]\\Art-Private\\tinto-assets\\content\\bank-tinto\\com.jfixby.r3.fokker.shader.photoshop\\content\\r3.shader.info");
-    // try {
-    // reader.readRootFile(shader_root_file);
-    // } catch (IOException e) {
-    // e.printStackTrace();
-    // }
-    //
-    // AssetID asset_id =
-    // Names.newAssetID("com.jfixby.r3.fokker.shader.photoshop.test");
-    // ShaderAsset asset = reader.findStructure(asset_id);
-    // fokkerShader = new RedFokkerShader(asset);
-    //
-    // return (ShaderProgram) fokkerShader.getGdxShaderProgram();
-    // }
-    //
-    // private void activateShader() {
-    // Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
-    // params.print("shader params");
-    // // Err.reportError("here");
-    // // fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(),
-    // // Screen.getScreenWidth());
-    // // fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(),
-    // // Screen.getScreenHeight());
-    // fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);
-    // fokkerShader.setIntParameterValue(params.getValueAt(3).getName(), 0);
-    // fokkerShader.setIntParameterValue(params.getValueAt(4).getName(), 1);
-    //
-    // // shader.setFloatParameterValue("test", 0.5);
-    //
-    // fokkerShader.setupValues();
-    // }
+    private ShaderProgram loadShader() {
+
+	FokkerShaderPackageReader reader = new FokkerShaderPackageReader();
+
+	File shader_root_file = LocalFileSystem.newFile(
+		"D:\\[DATA]\\[RED-ASSETS]\\Art-Private\\tinto-assets\\content\\bank-tinto\\com.jfixby.r3.fokker.shader.photoshop\\content\\r3.shader.info");
+	try {
+	    reader.readRootFile(shader_root_file);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
+	AssetID asset_id = Names.newAssetID("com.jfixby.r3.fokker.shader.photoshop.test");
+	ShaderAsset asset = reader.findStructure(asset_id);
+	fokkerShader = new RedFokkerShader(asset);
+
+	return (ShaderProgram) fokkerShader.getGdxShaderProgram();
+    }
+
+    private void activateShader() {
+	Mapping<String, ShaderParameter> params = fokkerShader.listParameters();
+	params.print("shader params");
+	// Err.reportError("here");
+	// fokkerShader.setFloatParameterValue(params.getValueAt(0).getName(),
+	// Screen.getScreenWidth());
+	// fokkerShader.setFloatParameterValue(params.getValueAt(1).getName(),
+	// Screen.getScreenHeight());
+	fokkerShader.setFloatParameterValue(params.getValueAt(2).getName(), 1f);
+	fokkerShader.setIntParameterValue(params.getValueAt(3).getName(), 0);
+	fokkerShader.setIntParameterValue(params.getValueAt(4).getName(), 1);
+	fokkerShader.setIntParameterValue(params.getValueAt(5).getName(), 2);
+	fokkerShader.setFloatParameterValue(params.getValueAt(6).getName(), RedFokkerShader.TRUE);
+
+	// shader.setFloatParameterValue("test", 0.5);
+	// fokkerShader.printParameterValues();
+	// Sys.exit();
+	fokkerShader.setupValues();
+    }
 
     public void render() {
 	final float gray = 0.5f;
@@ -247,14 +260,18 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	}
 	batch.end();
 
-	// if (compressed_atlas.getLoadMode() ==
-	// ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
-	// activateShader();
-	// batch.setShader(gdxShader);
-	//
-	// }
+	if (compressed_atlas.getLoadMode() == ATLAS_LOAD_MODE.SECOND_ALPHA_TEXTURE_SHADER) {
+	    activateShader();
+	    batch.setShader(gdxShader);
+
+	}
 	batch.begin();
-	for (Sprite sprite : etc1Sprites) {
+	for (int i = 0; i < etc1Sprites.size; i++) {
+	    final Sprite sprite = etc1Sprites.get(i);
+	    final Sprite alphaSprite = etc1AlphaSprites.get(i);
+	    alphaSprite.getTexture().bind(2);
+	    // alphaSprite.getTexture().bind(1);
+	    sprite.getTexture().bind(0);
 	    sprite.draw(batch);
 	}
 	batch.end();
