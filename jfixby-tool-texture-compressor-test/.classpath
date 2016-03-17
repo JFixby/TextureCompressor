@@ -9,22 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-gdx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx-jnigen"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/gdx-backend-lwjgl-1.9.1.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/gdx-box2d-platform-1.9.1-natives-desktop.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/gdx-freetype-platform-1.9.1-natives-desktop.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/gdx-platform-1.9.1-natives-desktop.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jinput-2.0.5.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jinput-platform-2.0.5-natives-linux.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jinput-platform-2.0.5-natives-osx.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jinput-platform-2.0.5-natives-windows.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jlayer-1.0.1-gdx.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jorbis-0.0.17.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/jutils-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/lwjgl_util-2.9.2.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/lwjgl-2.9.2.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/lwjgl-platform-2.9.2-natives-linux.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/lwjgl-platform-2.9.2-natives-osx.jar"/>
-	<classpathentry kind="lib" path="/libs/gdx/1.9.1/desktop/lwjgl-platform-2.9.2-natives-windows.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx-jfixby-cmns"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-api"/>
@@ -35,5 +19,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rana-asset-red"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/gdx-backend-lwjgl"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
