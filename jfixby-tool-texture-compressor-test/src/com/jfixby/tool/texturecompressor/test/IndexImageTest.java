@@ -38,13 +38,14 @@ public class IndexImageTest {
 	int N = 16;
 	GraySet red_palette = Colors.newUniformGraySet((int) (-(0f - 0.21) * N));
 	GraySet green_palette = Colors.newUniformGraySet((int) (-(0f - 0.72) * N));
-	GraySet blue_palette = Colors.newUniformGraySet((int) (-2 * (0f - 0.07) * N));
-	GraySet alpha_palette = Colors.newUniformGraySet((int) (-(0f - 0.07) * N));
+	GraySet blue_palette = Colors.newUniformGraySet((int) (-(0f - 0.07) * N));
+	// GraySet alpha_palette = Colors.newUniformGraySet((int) (-(0f - 0.07)
+	// * N));
 
 	red_palette.print("red");
 	green_palette.print("green");
 	blue_palette.print("blue");
-	alpha_palette.print("alpha");
+	// alpha_palette.print("alpha");
 
 	int W = image.getWidth();
 	int H = image.getHeight();
@@ -52,12 +53,13 @@ public class IndexImageTest {
 	GrayIndexedλImage red_indexed = ImageProcessing.index(red, red_palette);
 	GrayIndexedλImage green_indexed = ImageProcessing.index(green, green_palette);
 	GrayIndexedλImage blue_indexed = ImageProcessing.index(blue, blue_palette);
-	GrayIndexedλImage alpha_indexed = ImageProcessing.index(alpha, alpha_palette);
+	// GrayIndexedλImage alpha_indexed = ImageProcessing.index(alpha,
+	// alpha_palette);
 
 	red = ImageProcessing.newGrayMap(red_indexed, W, H);
 	green = ImageProcessing.newGrayMap(green_indexed, W, H);
 	blue = ImageProcessing.newGrayMap(blue_indexed, W, H);
-	alpha = ImageProcessing.newGrayMap(alpha_indexed, W, H);
+	// alpha = ImageProcessing.newGrayMap(alpha_indexed, W, H);
 
 	{
 	    ColorMapSpecs specs = ImageProcessing.newColorMapSpecs();

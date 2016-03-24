@@ -17,7 +17,7 @@ import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.tools.gdx.texturepacker.api.indexed.IndexedCompressor;
 import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 
-public class IndexedColorCompressorTest {
+public class HistogrammTest {
 
     public static void main(String[] args) throws IOException {
 	DesktopAssembler.setup();
@@ -26,7 +26,7 @@ public class IndexedColorCompressorTest {
 	File home = LocalFileSystem.ApplicationHome();
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
-	File originalFile = input_folder.child("index-test.png");
+	File originalFile = input_folder.child("hks-e.png");
 
 	// File compressedFile =
 	// output_folder.child("index_compressed.r3-icolor");
