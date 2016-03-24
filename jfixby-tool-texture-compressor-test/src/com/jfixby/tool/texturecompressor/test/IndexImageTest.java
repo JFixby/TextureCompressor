@@ -26,7 +26,7 @@ public class IndexImageTest {
 	File home = LocalFileSystem.ApplicationHome();
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
-	File originalFile = input_folder.child("fox.png");
+	File originalFile = input_folder.child("etc1-test.png");
 	final ArrayColorMap image = ImageAWT.readAWTColorMap(originalFile);
 
 	GrayMap red = image.getRed();
@@ -36,9 +36,21 @@ public class IndexImageTest {
 
 	// 0.21 R + 0.72 G + 0.07 B
 	int N = 16;
-	GraySet red_palette = Colors.newUniformGraySet((int) (-(0f - 0.21) * N));
-	GraySet green_palette = Colors.newUniformGraySet((int) (-(0f - 0.72) * N));
-	GraySet blue_palette = Colors.newUniformGraySet((int) (-(0f - 0.07) * N));
+	// GraySet red_palette = Colors.newUniformGraySet((int) (+(1f - 0.21) *
+	// N));
+	// GraySet green_palette = Colors.newUniformGraySet((int) (+(1f - 0.72)
+	// * N));
+	// GraySet blue_palette = Colors.newUniformGraySet((int) (+(1f - 0.21) *
+	// N));
+
+	GraySet red_palette = Colors.newUniformGraySet((int) (15));// -4bit
+	GraySet green_palette = Colors.newUniformGraySet((int) (31));// -2bit
+	GraySet blue_palette = Colors.newUniformGraySet((int) (15));// -4bit
+
+	// GraySet red_palette = Colors.newUniformGraySet((int) (N));
+	// GraySet green_palette = Colors.newUniformGraySet((int) (N));
+	// GraySet blue_palette = Colors.newUniformGraySet((int) (N));
+
 	// GraySet alpha_palette = Colors.newUniformGraySet((int) (-(0f - 0.07)
 	// * N));
 

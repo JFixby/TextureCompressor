@@ -33,7 +33,7 @@ public class HistogrammTest {
 	final Histogramm<Float> reds = Collections.newHistogramm();
 	final Histogramm<Float> greens = Collections.newHistogramm();
 	final Histogramm<Float> blues = Collections.newHistogramm();
-	final Histogramm<Float> alphas = Collections.newHistogramm();
+//	final Histogramm<Float> alphas = Collections.newHistogramm();
 	final ArrayColorMap image = ImageAWT.readAWTColorMap(originalFile);
 	for (int i = 0; i < image.getWidth(); i++) {
 	    for (int j = 0; j < image.getHeight(); j++) {
@@ -41,7 +41,7 @@ public class HistogrammTest {
 		reds.addIf(color.red() * 255, color.red() > 0 && color.red() < 1);
 		greens.addIf(color.green() * 255, color.green() > 0 && color.green() < 1);
 		blues.addIf(color.blue() * 255, color.blue() > 0 && color.blue() < 1);
-		alphas.addIf(color.alpha() * 255, color.alpha() > 0 && color.alpha() < 1);
+//		alphas.addIf(color.alpha() * 255, color.alpha() > 0 && color.alpha() < 1);
 	    }
 	}
 	reds.sort();
@@ -53,13 +53,13 @@ public class HistogrammTest {
 	blues.sort();
 	blues.print("blues");
 
-	alphas.sort();
-	alphas.print("alphas");
+//	alphas.sort();
+//	alphas.print("alphas");
 
 	GrayλImage redImage = histogrammImage(reds);
 	GrayλImage greenImage = histogrammImage(greens);
 	GrayλImage blueImage = histogrammImage(blues);
-	GrayλImage alphaImage = histogrammImage(alphas);
+//	GrayλImage alphaImage = histogrammImage(alphas);
 
 	{
 	    ColorMapSpecs specs = ImageProcessing.newColorMapSpecs();
@@ -98,16 +98,16 @@ public class HistogrammTest {
 	    ImageAWT.writeToFile(colormap, output_folder.child("histogramm-blue.png"), "png");
 	}
 	{
-	    ColorMapSpecs specs = ImageProcessing.newColorMapSpecs();
-	    specs.setColorMapDimentions(256, 256);
-	    specs.setRed(alphaImage);
-	    specs.setGreen(alphaImage);
-	    specs.setBlue(alphaImage);
-	    ColorMap colormap = ImageProcessing.newColorMap(specs);
-
-	    colormap = ImageProcessing.newColorMap(ImageProcessing.scale(colormap, 2, 2), 256 * 2, 256 * 2);
-
-	    ImageAWT.writeToFile(colormap, output_folder.child("histogramm-alpha.png"), "png");
+//	    ColorMapSpecs specs = ImageProcessing.newColorMapSpecs();
+//	    specs.setColorMapDimentions(256, 256);
+//	    specs.setRed(alphaImage);
+//	    specs.setGreen(alphaImage);
+//	    specs.setBlue(alphaImage);
+//	    ColorMap colormap = ImageProcessing.newColorMap(specs);
+//
+//	    colormap = ImageProcessing.newColorMap(ImageProcessing.scale(colormap, 2, 2), 256 * 2, 256 * 2);
+//
+//	    ImageAWT.writeToFile(colormap, output_folder.child("histogramm-alpha.png"), "png");
 	}
 
     }

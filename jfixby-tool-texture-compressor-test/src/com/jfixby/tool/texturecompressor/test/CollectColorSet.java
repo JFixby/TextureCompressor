@@ -3,8 +3,8 @@ package com.jfixby.tool.texturecompressor.test;
 import java.io.IOException;
 
 import com.jfixby.cmns.api.color.Color;
-import com.jfixby.cmns.api.color.Colors;
 import com.jfixby.cmns.api.color.ColorSet;
+import com.jfixby.cmns.api.color.Colors;
 import com.jfixby.cmns.api.desktop.ImageAWT;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
@@ -25,7 +25,8 @@ public class CollectColorSet {
 	File home = LocalFileSystem.ApplicationHome();
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
-	File originalFile = input_folder.child("hks-e.png");
+//	File originalFile = input_folder.child("hks-e.png");
+	File originalFile = input_folder.child("fox.png");
 	final ArrayColorMap image = ImageAWT.readAWTColorMap(originalFile);
 
 	final ColorSet palette = Colors.newColorsSet(image);
