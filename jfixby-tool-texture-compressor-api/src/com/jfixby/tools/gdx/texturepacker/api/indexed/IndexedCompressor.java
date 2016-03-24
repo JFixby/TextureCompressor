@@ -19,4 +19,8 @@ public class IndexedCompressor {
 	return componentInstaller.getComponent();
     }
 
+    public static IndexColorCompressionSpecs newCompressionSpecs() {
+	return invoke().newCompressionSpecs();
+    }
+
 }
