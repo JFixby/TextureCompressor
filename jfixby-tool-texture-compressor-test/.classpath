@@ -20,5 +20,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx-backend-lwjgl"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-red"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
