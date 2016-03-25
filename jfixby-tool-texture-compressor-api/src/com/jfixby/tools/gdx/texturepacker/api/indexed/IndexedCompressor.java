@@ -36,4 +36,16 @@ public class IndexedCompressor {
 	invoke().compressFile(originalFile, output_file);
     }
 
+    public static void deCompressFile(File compressedFile, File output_file) throws IOException {
+	invoke().deCompressFile(compressedFile, output_file);
+    }
+
+    public static IndexColorDeCompressionParams newDeCompressionParams() {
+	return invoke().newDeCompressionParams();
+    }
+
+    public static IndexColorDeCompressionResult deCompress(IndexColorDeCompressionParams params) throws IOException {
+	return invoke().deCompress(params);
+    }
+
 }

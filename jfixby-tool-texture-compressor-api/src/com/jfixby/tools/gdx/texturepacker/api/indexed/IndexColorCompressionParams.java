@@ -1,6 +1,5 @@
 package com.jfixby.tools.gdx.texturepacker.api.indexed;
 
-import com.jfixby.cmns.api.color.ColorSet;
 import com.jfixby.cmns.api.color.GraySet;
 import com.jfixby.cmns.api.image.ColorMap;
 import com.jfixby.cmns.api.io.OutputStream;
@@ -31,12 +30,16 @@ public interface IndexColorCompressionParams {
 
     GraySet getGreenPalette();
 
-//    void setColorPalette(ColorSet colorPalette);
+    // void setColorPalette(ColorSet colorPalette);
 
-//    ColorSet getColorPalette();
+    // ColorSet getColorPalette();
 
     void setCompressionStrategy(CompressionStrategy channelByChannel);
 
     CompressionStrategy getCompressionStrategy();
+
+    public void setUseGZip(boolean useGzip);
+
+    public boolean useGZip();
 
 }

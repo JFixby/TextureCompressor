@@ -8,7 +8,7 @@ import com.jfixby.red.desktop.DesktopAssembler;
 import com.jfixby.tools.gdx.texturepacker.api.indexed.IndexedCompressor;
 import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 
-public class IndexCompressImage {
+public class IndexDeCompressImage {
 
     public static void main(String[] args) throws IOException {
 
@@ -16,13 +16,13 @@ public class IndexCompressImage {
 	IndexedCompressor.installComponent(new RedIndexedCompressor());
 
 	File home = LocalFileSystem.ApplicationHome();
-	File input_folder = home.child("input");
+	File input_folder = home.child("indexed");
 	File output_folder = home.child("indexed");
 
-	File originalFile = input_folder.child("etc1-test.png");
+	File compressedFile = input_folder.child("etc1-test.r3-icolor");
 
-	File output_file = output_folder.child(originalFile.nameWithoutExtension() + IndexedCompressor.INDEXED_COLOR_FILE_EXTENTION);
-	IndexedCompressor.compressFile(originalFile, output_file);
+	File output_file = output_folder.child(compressedFile.nameWithoutExtension() + "-restored.png");
+	IndexedCompressor.deCompressFile(compressedFile, output_file);
 
     }
 
