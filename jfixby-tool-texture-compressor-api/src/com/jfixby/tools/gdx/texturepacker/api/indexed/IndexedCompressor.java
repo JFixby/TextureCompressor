@@ -10,9 +10,9 @@ public class IndexedCompressor {
 
     public static final String INDEXED_COLOR_FILE_EXTENTION = ".r3-icolor";
 
-    public static final int DEFAULT_RED_PALETTE_SIZE = 16;
-    public static final int DEFAULT_GREEN_PALETTE_SIZE = 32;
-    public static final int DEFAULT_BLUE_PALETTE_SIZE = 16;
+    public static final int DEFAULT_RED_PALETTE_SIZE = 16 * 2;
+    public static final int DEFAULT_GREEN_PALETTE_SIZE = 32 * 2;
+    public static final int DEFAULT_BLUE_PALETTE_SIZE = 16 * 2;
 
     static private ComponentInstaller<IndexedCompressorComponent> componentInstaller = new ComponentInstaller<IndexedCompressorComponent>(
 	    "IndexedCompressor");
