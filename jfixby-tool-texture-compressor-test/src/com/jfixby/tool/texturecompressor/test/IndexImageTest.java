@@ -42,9 +42,9 @@ public class IndexImageTest {
 	// GraySet blue_palette = Colors.newUniformGraySet((int) (+(1f - 0.21) *
 	// N));
 
-	GraySet red_palette = Colors.newUniformGraySet((int) (16));// -4bit
-	GraySet green_palette = Colors.newUniformGraySet((int) (32));// -2bit
-	GraySet blue_palette = Colors.newUniformGraySet((int) (16));// -4bit
+	GraySet red_palette = Colors.newUniformGraySet((int) (15));// -4bit
+	GraySet green_palette = Colors.newUniformGraySet((int) (31));// -2bit
+	GraySet blue_palette = Colors.newUniformGraySet((int) (15));// -4bit
 
 	// GraySet red_palette = Colors.newUniformGraySet((int) (N));
 	// GraySet green_palette = Colors.newUniformGraySet((int) (N));
