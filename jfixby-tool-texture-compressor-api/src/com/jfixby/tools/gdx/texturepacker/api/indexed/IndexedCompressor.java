@@ -4,10 +4,15 @@ import java.io.IOException;
 
 import com.jfixby.cmns.api.ComponentInstaller;
 import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.image.ColorMap;
 
 public class IndexedCompressor {
 
     public static final String INDEXED_COLOR_FILE_EXTENTION = ".r3-icolor";
+
+    public static final int DEFAULT_RED_PALETTE_SIZE = 16;
+    public static final int DEFAULT_GREEN_PALETTE_SIZE = 32;
+    public static final int DEFAULT_BLUE_PALETTE_SIZE = 16;
 
     static private ComponentInstaller<IndexedCompressorComponent> componentInstaller = new ComponentInstaller<IndexedCompressorComponent>(
 	    "IndexedCompressor");
@@ -46,6 +51,14 @@ public class IndexedCompressor {
 
     public static IndexColorDeCompressionResult deCompress(IndexColorDeCompressionParams params) throws IOException {
 	return invoke().deCompress(params);
+    }
+
+    public static void indexImage(File originalFile, File indexedFile) throws IOException {
+	invoke().indexImage(originalFile, indexedFile);
+    }
+
+    public static ColorMap indexImage(ColorMap originalImage) {
+	return invoke().indexImage(originalImage);
     }
 
 }

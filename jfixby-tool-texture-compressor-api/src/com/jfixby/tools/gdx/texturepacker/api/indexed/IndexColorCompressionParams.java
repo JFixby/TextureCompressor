@@ -14,10 +14,6 @@ public interface IndexColorCompressionParams {
 
     OutputStream getOutputStream();
 
-    void setRGBOrder(RGBOrder rgb);
-
-    RGBOrder getRGBOrder();
-
     void setRedPalette(GraySet red_palette);
 
     GraySet getRedPalette();
@@ -38,8 +34,8 @@ public interface IndexColorCompressionParams {
 
     CompressionStrategy getCompressionStrategy();
 
-    public void setUseGZip(boolean useGzip);
-
-    public boolean useGZip();
+    // public void setUseGZip(boolean useGzip);
+    //
+    // public boolean useGZip();
 
 }

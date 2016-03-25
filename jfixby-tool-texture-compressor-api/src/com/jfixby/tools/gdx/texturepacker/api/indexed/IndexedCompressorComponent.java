@@ -3,6 +3,7 @@ package com.jfixby.tools.gdx.texturepacker.api.indexed;
 import java.io.IOException;
 
 import com.jfixby.cmns.api.file.File;
+import com.jfixby.cmns.api.image.ColorMap;
 
 public interface IndexedCompressorComponent {
 
@@ -17,4 +18,8 @@ public interface IndexedCompressorComponent {
     IndexColorDeCompressionParams newDeCompressionParams();
 
     IndexColorDeCompressionResult deCompress(IndexColorDeCompressionParams params) throws IOException;
+
+    void indexImage(File originalFile, File indexedFile) throws IOException;
+
+    ColorMap indexImage(ColorMap originalImage);
 }
