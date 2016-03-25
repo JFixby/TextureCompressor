@@ -3,6 +3,7 @@ package com.jfixby.tools.gdx.texturepacker.api.indexed;
 import java.io.IOException;
 
 import com.jfixby.cmns.api.ComponentInstaller;
+import com.jfixby.cmns.api.file.File;
 
 public class IndexedCompressor {
 
@@ -29,6 +30,10 @@ public class IndexedCompressor {
 
     public static void compress(IndexColorCompressionParams params) throws IOException {
 	invoke().compress(params);
+    }
+
+    public static void compressFile(File originalFile, File output_file) throws IOException {
+	invoke().compressFile(originalFile, output_file);
     }
 
 }
