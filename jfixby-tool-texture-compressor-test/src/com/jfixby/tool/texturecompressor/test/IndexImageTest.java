@@ -9,7 +9,6 @@ import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.image.ArrayColorMap;
 import com.jfixby.cmns.api.image.ColorMap;
-import com.jfixby.cmns.api.image.ColorMapSpecs;
 import com.jfixby.cmns.api.image.GrayIndexedλImage;
 import com.jfixby.cmns.api.image.GrayMap;
 import com.jfixby.cmns.api.image.ImageProcessing;
@@ -26,7 +25,7 @@ public class IndexImageTest {
 	File home = LocalFileSystem.ApplicationHome();
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
-	File originalFile = input_folder.child("etc1-test.png");
+	File originalFile = input_folder.child("fox.png");
 	final ArrayColorMap image = ImageAWT.readAWTColorMap(originalFile);
 
 	GrayMap red = image.getRed();
@@ -43,9 +42,9 @@ public class IndexImageTest {
 	// GraySet blue_palette = Colors.newUniformGraySet((int) (+(1f - 0.21) *
 	// N));
 
-	GraySet red_palette = Colors.newUniformGraySet((int) (15));// -4bit
-	GraySet green_palette = Colors.newUniformGraySet((int) (31));// -2bit
-	GraySet blue_palette = Colors.newUniformGraySet((int) (15));// -4bit
+	GraySet red_palette = Colors.newUniformGraySet((int) (16));// -4bit
+	GraySet green_palette = Colors.newUniformGraySet((int) (32));// -2bit
+	GraySet blue_palette = Colors.newUniformGraySet((int) (16));// -4bit
 
 	// GraySet red_palette = Colors.newUniformGraySet((int) (N));
 	// GraySet green_palette = Colors.newUniformGraySet((int) (N));
@@ -74,13 +73,8 @@ public class IndexImageTest {
 	// alpha = ImageProcessing.newGrayMap(alpha_indexed, W, H);
 
 	{
-	    ColorMapSpecs specs = ImageProcessing.newColorMapSpecs();
-	    specs.setColorMapDimentions(W, H);
-	    specs.setRed(red);
-	    specs.setGreen(green);
-	    specs.setBlue(blue);
-	    specs.setAlpha(alpha);
-	    ColorMap colormap = ImageProcessing.newColorMap(specs);
+
+	    ColorMap colormap = ImageProcessing.newColorMap(W, H, alpha, red, green, blue);
 
 	    ImageAWT.writeToFile(colormap, output_folder.child("indexed.png"), "png");
 	}

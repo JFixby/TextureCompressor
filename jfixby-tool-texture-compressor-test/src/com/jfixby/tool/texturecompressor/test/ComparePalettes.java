@@ -9,7 +9,6 @@ import com.jfixby.cmns.api.desktop.ImageAWT;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.image.ColorMap;
-import com.jfixby.cmns.api.image.ColorMapSpecs;
 import com.jfixby.cmns.api.image.GrayIndexedλImage;
 import com.jfixby.cmns.api.image.GrayMap;
 import com.jfixby.cmns.api.image.ImageProcessing;
@@ -55,17 +54,8 @@ public class ComparePalettes {
 	GrayIndexedλImage green_indexed = ImageProcessing.index(green, green_hkse_palette);
 	GrayIndexedλImage blue_indexed = ImageProcessing.index(blue, green_hkse_palette);
 
-	{
-	    ColorMapSpecs specs = ImageProcessing.newColorMapSpecs();
-	    specs.setColorMapDimentions(W, H);
-	    specs.setRed(red_indexed);
-	    specs.setGreen(green_indexed);
-	    specs.setBlue(blue_indexed);
-	    specs.setAlpha(alpha);
-	    ColorMap colormap = ImageProcessing.newColorMap(specs);
-
-	    ImageAWT.writeToFile(colormap, output_folder.child("fox-projected.png"), "png");
-	}
+	ColorMap colormap = ImageProcessing.newColorMap(W, H, alpha, red_indexed, green_indexed, blue_indexed);
+	ImageAWT.writeToFile(colormap, output_folder.child("fox-projected.png"), "png");
 
 	// red_hkse_palette.print("red_hkse_palette");
 	// green_hkse_palette.print("green_hkse_palette");
