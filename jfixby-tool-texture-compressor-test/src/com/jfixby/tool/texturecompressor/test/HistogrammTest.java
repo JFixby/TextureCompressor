@@ -26,7 +26,7 @@ public class HistogrammTest {
 	File home = LocalFileSystem.ApplicationHome();
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
-	File originalFile = input_folder.child("hks-e.png");
+	File originalFile = input_folder.child("fox.png");
 
 	// File compressedFile =
 	// output_folder.child("index_compressed.r3-icolor");
@@ -44,13 +44,13 @@ public class HistogrammTest {
 //		alphas.addIf(color.alpha() * 255, color.alpha() > 0 && color.alpha() < 1);
 	    }
 	}
-	reds.sort();
+	reds.sortValues();
 	reds.print("reds");
 
-	greens.sort();
+	greens.sortValues();
 	greens.print("greens");
 
-	blues.sort();
+	blues.sortValues();
 	blues.print("blues");
 
 //	alphas.sort();

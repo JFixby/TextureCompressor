@@ -36,7 +36,7 @@ public class CollectColorSet {
 	ColoredλImage paletteImage = new ColoredλImage() {
 	    @Override
 	    public Color valueAt(float x, float y) {
-		return palette.get((int) x);
+		return palette.getElementAt((int) x);
 	    }
 	};
 
