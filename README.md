@@ -1,5 +1,10 @@
 # TextureCompressor
 Supported compresions:
+ - R3-Indexed
+ 
+![r3-64-indexed](https://cloud.githubusercontent.com/assets/1580663/14062017/e2ca7af8-f390-11e5-8355-07b4764200cd.png)
+ 
+
  - ETC1
  
 ![etc1compressedatlas](https://cloud.githubusercontent.com/assets/1580663/13710923/32dc952a-e7bc-11e5-932d-ce7548aa73e4.jpg)
