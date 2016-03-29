@@ -12,7 +12,7 @@ public class IndexedCompressor {
 
     public static final int DEFAULT_RED_PALETTE_SIZE = 64;
     public static final int DEFAULT_GREEN_PALETTE_SIZE = 64;
-    public static final int DEFAULT_BLUE_PALETTE_SIZE = 32;
+    public static final int DEFAULT_BLUE_PALETTE_SIZE = 16;
     public static final int DEFAULT_ALPHA_PALETTE_SIZE = 128;
 
     static private ComponentInstaller<IndexedCompressorComponent> componentInstaller = new ComponentInstaller<IndexedCompressorComponent>(
@@ -38,8 +38,8 @@ public class IndexedCompressor {
 	invoke().compress(params);
     }
 
-    public static void compressFile(File originalFile, File output_file) throws IOException {
-	invoke().compressFile(originalFile, output_file);
+    public static void compressFile(File originalFile, File outputFile) throws IOException {
+	invoke().compressFile(originalFile, outputFile);
     }
 
     public static void deCompressFile(File compressedFile, File output_file) throws IOException {
@@ -60,6 +60,14 @@ public class IndexedCompressor {
 
     public static ColorMap indexImage(ColorMap originalImage) {
 	return invoke().indexImage(originalImage);
+    }
+
+    public static ColorMap deCompress(File compressedFile) throws IOException {
+	return invoke().deCompress(compressedFile);
+    }
+
+    public static ColorIndexMap readColorIndexMap(File compressedFile) throws IOException {
+	return invoke().readColorIndexMap(compressedFile);
     }
 
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.image.ColorMap;
+import com.jfixby.cmns.api.io.InputStream;
 
 public interface IndexedCompressorComponent {
 
@@ -11,7 +12,7 @@ public interface IndexedCompressorComponent {
 
     void compress(IndexColorCompressionParams params) throws IOException;
 
-    void compressFile(File originalFile, File output_file) throws IOException;
+    void compressFile(File originalFile, File outputFile) throws IOException;
 
     void deCompressFile(File compressedFile, File output_file) throws IOException;
 
@@ -22,4 +23,10 @@ public interface IndexedCompressorComponent {
     void indexImage(File originalFile, File indexedFile) throws IOException;
 
     ColorMap indexImage(ColorMap originalImage);
+
+    ColorMap deCompress(File compressedFile) throws IOException;
+
+    ColorIndexMap readColorIndexMap(File compressedFile)throws IOException;
+
+    ColorIndexMap readColorIndexMap(InputStream stream) throws IOException;
 }
