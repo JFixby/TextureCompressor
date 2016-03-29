@@ -19,7 +19,7 @@ public class CompressRestoreIndex {
 	File input_folder = home.child("indexed");
 	File output_folder = home.child("indexed");
 
-	File originalFile = input_folder.child("tree2.png");
+	File originalFile = input_folder.child("fox.png");
 
 	File compressedFile = output_folder
 		.child(originalFile.nameWithoutExtension() + IndexedCompressor.INDEXED_COLOR_FILE_EXTENTION);

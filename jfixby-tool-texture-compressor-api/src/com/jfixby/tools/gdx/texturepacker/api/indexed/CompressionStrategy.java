@@ -4,7 +4,7 @@ public enum CompressionStrategy {
 
     SEPARATE_CHANNELS(53), MERGE_CHANNELS(31);
 
-    private byte byteFlag;
+    private int byteFlag;
 
     CompressionStrategy(int byteFlag) {
 	this.byteFlag = (byte) byteFlag;
@@ -17,11 +17,11 @@ public enum CompressionStrategy {
 	return SEPARATE_CHANNELS;
     }
 
-    public byte byteFlag() {
+    public int byteFlag() {
 	return byteFlag;
     }
 
-    public static CompressionStrategy valueOf(byte readByte) {
+    public static CompressionStrategy valueOf(int readByte) {
 	for (int i = 0; i < values().length; i++) {
 	    if (values()[i].byteFlag == readByte) {
 		return values()[i];
