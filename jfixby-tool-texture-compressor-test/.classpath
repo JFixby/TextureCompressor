@@ -9,7 +9,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-gdx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx-jnigen"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/gdx-jfixby-cmns"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red-gdx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-shader-api"/>

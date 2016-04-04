@@ -33,7 +33,7 @@ import com.jfixby.cmns.adopted.gdx.atlas.CompressedFokkerAtlas;
 import com.jfixby.cmns.adopted.gdx.atlas.CompressedGdxTextureAtlas;
 import com.jfixby.cmns.adopted.gdx.atlas.GdxSprite;
 import com.jfixby.cmns.adopted.gdx.atlas.GdxTextureAtlas;
-import com.jfixby.cmns.adopted.gdx.json.GdxJson;
+import com.jfixby.cmns.adopted.gdx.json.RedJson;
 import com.jfixby.cmns.api.assets.AssetID;
 import com.jfixby.cmns.api.assets.Names;
 import com.jfixby.cmns.api.collections.Mapping;
@@ -75,7 +75,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	DesktopAssembler.setup();
 	TexturePacker.installComponent(new GdxTexturePacker());
 	ETC1Compressor.installComponent(new GdxETC1());
-	Json.installComponent(new GdxJson());
+	Json.installComponent(new RedJson());
 	RedResourcesManager res_manager = new RedResourcesManager();
 	ResourcesManager.installComponent(res_manager);
 
