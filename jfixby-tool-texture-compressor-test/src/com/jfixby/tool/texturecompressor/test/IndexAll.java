@@ -24,7 +24,7 @@ public class IndexAll {
 
 	for (int i = 0; i < inputFiles.size(); i++) {
 	    File file_i = inputFiles.getElementAt(i);
-	    if (file_i.extensionIs(".png")) {
+	    if (file_i.extensionIs("png")) {
 
 		L.d("processing", file_i);
 		LocalFileSystem.copyFileToFolder(file_i, output_folder);
