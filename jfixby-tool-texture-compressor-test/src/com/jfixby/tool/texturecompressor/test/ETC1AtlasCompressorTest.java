@@ -32,7 +32,7 @@ import com.jfixby.cmns.adopted.gdx.atlas.ATLAS_LOAD_MODE;
 import com.jfixby.cmns.adopted.gdx.atlas.CompressedFokkerAtlas;
 import com.jfixby.cmns.adopted.gdx.atlas.CompressedGdxTextureAtlas;
 import com.jfixby.cmns.adopted.gdx.atlas.GdxSprite;
-import com.jfixby.cmns.adopted.gdx.atlas.GdxTextureAtlas;
+import com.jfixby.cmns.adopted.gdx.atlas.legacy.GdxTextureAtlas;
 import com.jfixby.cmns.adopted.gdx.json.RedJson;
 import com.jfixby.cmns.api.assets.AssetID;
 import com.jfixby.cmns.api.assets.Names;
