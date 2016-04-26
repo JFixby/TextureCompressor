@@ -136,7 +136,7 @@ public class GdxETC1 implements ETC1CompressorComponent {
 	}
 
 	@Override
-	public ETC1DeCompressionResult deCompress (final ETC1DeCompressionParams params) {
+	public ETC1DeCompressionResult deCompress (final ETC1DeCompressionParams params) throws IOException {
 		final GdxETC1DeCompressionResult result = new GdxETC1DeCompressionResult();
 		final InputStream inputStream = params.getInputStream();
 		final java.io.InputStream javaInputStream = inputStream.toJavaInputStream();
