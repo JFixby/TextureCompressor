@@ -12,14 +12,14 @@ import com.jfixby.cmns.api.image.ArrayColorMap;
 import com.jfixby.cmns.api.image.ColorMap;
 import com.jfixby.cmns.api.image.GrayλImage;
 import com.jfixby.cmns.api.image.ImageProcessing;
-import com.jfixby.red.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.DesktopSetup;
 import com.jfixby.tools.gdx.texturepacker.api.indexed.IndexedCompressor;
 import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 
 public class IndexUnPress {
 
     public static void main(String[] args) throws IOException {
-	DesktopAssembler.setup();
+	DesktopSetup.deploy();
 	IndexedCompressor.installComponent(new RedIndexedCompressor());
 
 	File home = LocalFileSystem.ApplicationHome();

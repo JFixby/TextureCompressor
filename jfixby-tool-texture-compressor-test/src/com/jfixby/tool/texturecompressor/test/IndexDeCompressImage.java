@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.log.L;
-import com.jfixby.red.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.DesktopSetup;
 import com.jfixby.tools.gdx.texturepacker.api.indexed.IndexedCompressor;
 import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 
@@ -13,7 +13,7 @@ public class IndexDeCompressImage {
 
     public static void main(String[] args) throws IOException {
 
-	DesktopAssembler.setup();
+	DesktopSetup.deploy();
 	IndexedCompressor.installComponent(new RedIndexedCompressor());
 
 	File home = LocalFileSystem.ApplicationHome();

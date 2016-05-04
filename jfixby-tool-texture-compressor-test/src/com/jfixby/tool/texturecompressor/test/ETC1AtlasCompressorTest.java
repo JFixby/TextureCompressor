@@ -48,7 +48,7 @@ import com.jfixby.r3.api.shader.ShaderAsset;
 import com.jfixby.r3.api.shader.ShaderParameter;
 import com.jfixby.r3.shader.fokker.FokkerShaderPackageReader;
 import com.jfixby.rana.api.pkg.ResourcesManager;
-import com.jfixby.red.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.DesktopSetup;
 import com.jfixby.red.engine.core.unit.shader.RedFokkerShader;
 import com.jfixby.red.triplane.resources.fsbased.RedResourcesManager;
 import com.jfixby.tools.gdx.texturepacker.GdxTexturePacker;
@@ -72,7 +72,7 @@ public class ETC1AtlasCompressorTest implements ApplicationListener {
 	}
 
 	public static void main (String[] args) throws Exception {
-		DesktopAssembler.setup();
+		DesktopSetup.deploy();
 		TexturePacker.installComponent(new GdxTexturePacker());
 		ETC1Compressor.installComponent(new GdxETC1());
 		Json.installComponent(new RedJson());

@@ -6,7 +6,7 @@ import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.color.Colors;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
-import com.jfixby.red.desktop.DesktopAssembler;
+import com.jfixby.red.desktop.DesktopSetup;
 import com.jfixby.tools.gdx.texturepacker.api.etc1.ETC1Compressor;
 import com.jfixby.tools.gdx.texturepacker.etc1.GdxETC1;
 
@@ -14,7 +14,7 @@ public class ETC1CompressorTest {
 
     public static void main(String[] args) throws IOException {
 
-	DesktopAssembler.setup();
+	DesktopSetup.deploy();
 	ETC1Compressor.installComponent(new GdxETC1());
 	Color transparentColor = Colors.FUCHSIA();
 	File home = LocalFileSystem.ApplicationHome();
