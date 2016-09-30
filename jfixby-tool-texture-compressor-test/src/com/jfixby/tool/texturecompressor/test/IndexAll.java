@@ -20,7 +20,7 @@ public class IndexAll {
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
 	output_folder.makeFolder();
-	ChildrenList inputFiles = input_folder.listChildren();
+	ChildrenList inputFiles = input_folder.listDirectChildren();
 
 	for (int i = 0; i < inputFiles.size(); i++) {
 	    File file_i = inputFiles.getElementAt(i);
