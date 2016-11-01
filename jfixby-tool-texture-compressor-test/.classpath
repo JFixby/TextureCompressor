@@ -7,7 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red-desktop"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-gdx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx-jnigen"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red-gdx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
