@@ -7,13 +7,13 @@ import com.jfixby.cmns.api.color.Color;
 import com.jfixby.cmns.api.color.ColorProjector;
 import com.jfixby.cmns.api.color.Colors;
 import com.jfixby.cmns.api.color.GraySet;
+import com.jfixby.cmns.api.desktop.DesktopSetup;
 import com.jfixby.cmns.api.desktop.ImageAWT;
 import com.jfixby.cmns.api.file.File;
 import com.jfixby.cmns.api.file.LocalFileSystem;
 import com.jfixby.cmns.api.image.ColorMap;
 import com.jfixby.cmns.api.image.ImageProcessing;
 import com.jfixby.cmns.api.log.L;
-import com.jfixby.red.desktop.DesktopSetup;
 import com.jfixby.tools.gdx.texturepacker.api.indexed.IndexedCompressor;
 import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 
