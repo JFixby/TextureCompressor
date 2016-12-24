@@ -1,6 +1,6 @@
 package com.jfixby.tools.gdx.texturepacker.api.indexed;
 
-import com.jfixby.cmns.api.color.Color;
+import com.jfixby.scarabei.api.color.Color;
 
 public interface ColorIndexMap {
 

@@ -3,10 +3,10 @@ package com.jfixby.tools.gdx.texturepacker.api.indexed;
 
 import java.io.IOException;
 
-import com.jfixby.cmns.api.ComponentInstaller;
-import com.jfixby.cmns.api.file.File;
-import com.jfixby.cmns.api.image.ColorMap;
-import com.jfixby.cmns.api.math.IntegerMath;
+import com.jfixby.scarabei.api.ComponentInstaller;
+import com.jfixby.scarabei.api.file.File;
+import com.jfixby.scarabei.api.image.ColorMap;
+import com.jfixby.scarabei.api.math.IntegerMath;
 
 public class IndexedCompressor {
 

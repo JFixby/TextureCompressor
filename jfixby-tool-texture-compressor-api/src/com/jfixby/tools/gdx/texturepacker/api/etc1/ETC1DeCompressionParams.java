@@ -1,6 +1,6 @@
 package com.jfixby.tools.gdx.texturepacker.api.etc1;
 
-import com.jfixby.cmns.api.io.InputStream;
+import com.jfixby.scarabei.api.io.InputStream;
 
 public interface ETC1DeCompressionParams {
 

@@ -3,9 +3,9 @@ package com.jfixby.tools.gdx.texturepacker.api.etc1;
 
 import java.io.IOException;
 
-import com.jfixby.cmns.api.ComponentInstaller;
-import com.jfixby.cmns.api.color.Color;
-import com.jfixby.cmns.api.file.File;
+import com.jfixby.scarabei.api.ComponentInstaller;
+import com.jfixby.scarabei.api.color.Color;
+import com.jfixby.scarabei.api.file.File;
 
 public class ETC1Compressor {
 

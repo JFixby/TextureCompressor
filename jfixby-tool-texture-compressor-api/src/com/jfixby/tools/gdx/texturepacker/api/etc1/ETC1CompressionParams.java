@@ -1,8 +1,8 @@
 package com.jfixby.tools.gdx.texturepacker.api.etc1;
 
-import com.jfixby.cmns.api.color.Color;
-import com.jfixby.cmns.api.image.ColorMap;
-import com.jfixby.cmns.api.io.OutputStream;
+import com.jfixby.scarabei.api.color.Color;
+import com.jfixby.scarabei.api.image.ColorMap;
+import com.jfixby.scarabei.api.io.OutputStream;
 
 public interface ETC1CompressionParams {
 

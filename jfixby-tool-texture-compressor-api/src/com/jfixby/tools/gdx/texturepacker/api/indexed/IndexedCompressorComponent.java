@@ -3,9 +3,9 @@ package com.jfixby.tools.gdx.texturepacker.api.indexed;
 
 import java.io.IOException;
 
-import com.jfixby.cmns.api.file.File;
-import com.jfixby.cmns.api.image.ColorMap;
-import com.jfixby.cmns.api.io.InputStream;
+import com.jfixby.scarabei.api.file.File;
+import com.jfixby.scarabei.api.image.ColorMap;
+import com.jfixby.scarabei.api.io.InputStream;
 
 public interface IndexedCompressorComponent {
 
