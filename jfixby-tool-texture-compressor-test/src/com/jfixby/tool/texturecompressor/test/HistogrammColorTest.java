@@ -2,20 +2,20 @@ package com.jfixby.tool.texturecompressor.test;
 
 import java.io.IOException;
 
-import com.jfixby.cmns.api.collections.Collections;
-import com.jfixby.cmns.api.collections.Histogramm;
-import com.jfixby.cmns.api.color.Color;
-import com.jfixby.cmns.api.color.Colors;
-import com.jfixby.cmns.api.desktop.DesktopSetup;
-import com.jfixby.cmns.api.desktop.ImageAWT;
-import com.jfixby.cmns.api.file.File;
-import com.jfixby.cmns.api.file.LocalFileSystem;
-import com.jfixby.cmns.api.image.ColorMap;
-import com.jfixby.cmns.api.image.ColorMapSpecs;
-import com.jfixby.cmns.api.image.ColoredλImage;
-import com.jfixby.cmns.api.image.ImageProcessing;
-import com.jfixby.cmns.api.image.PixelByPixelAction;
-import com.jfixby.cmns.api.log.L;
+import com.jfixby.scarabei.api.collections.Collections;
+import com.jfixby.scarabei.api.collections.Histogramm;
+import com.jfixby.scarabei.api.color.Color;
+import com.jfixby.scarabei.api.color.Colors;
+import com.jfixby.scarabei.api.desktop.DesktopSetup;
+import com.jfixby.scarabei.api.desktop.ImageAWT;
+import com.jfixby.scarabei.api.file.File;
+import com.jfixby.scarabei.api.file.LocalFileSystem;
+import com.jfixby.scarabei.api.image.ColorMap;
+import com.jfixby.scarabei.api.image.ColorMapSpecs;
+import com.jfixby.scarabei.api.image.ColoredλImage;
+import com.jfixby.scarabei.api.image.ImageProcessing;
+import com.jfixby.scarabei.api.image.PixelByPixelAction;
+import com.jfixby.scarabei.api.log.L;
 import com.jfixby.tools.gdx.texturepacker.api.indexed.IndexedCompressor;
 import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 

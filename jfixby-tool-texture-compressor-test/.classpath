@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-api-desktop"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red-desktop"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scarabei-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scarabei-api-desktop"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scarabei-red"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scarabei-red-desktop"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-cmns-red-gdx"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scarabei-red-gdx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-shader-api"/>
