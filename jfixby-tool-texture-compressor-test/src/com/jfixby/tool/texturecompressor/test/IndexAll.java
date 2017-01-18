@@ -3,7 +3,7 @@ package com.jfixby.tool.texturecompressor.test;
 import java.io.IOException;
 
 import com.jfixby.scarabei.api.desktop.DesktopSetup;
-import com.jfixby.scarabei.api.file.ChildrenList;
+import com.jfixby.scarabei.api.file.FilesList;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
 import com.jfixby.scarabei.api.log.L;
@@ -20,7 +20,7 @@ public class IndexAll {
 	File input_folder = home.child("input");
 	File output_folder = home.child("indexed");
 	output_folder.makeFolder();
-	ChildrenList inputFiles = input_folder.listDirectChildren();
+	FilesList inputFiles = input_folder.listDirectChildren();
 
 	for (int i = 0; i < inputFiles.size(); i++) {
 	    File file_i = inputFiles.getElementAt(i);
