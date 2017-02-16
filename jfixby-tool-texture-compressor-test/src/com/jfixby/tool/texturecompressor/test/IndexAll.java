@@ -2,7 +2,7 @@ package com.jfixby.tool.texturecompressor.test;
 
 import java.io.IOException;
 
-import com.jfixby.scarabei.api.desktop.DesktopSetup;
+import com.jfixby.scarabei.api.desktop.ScarabeiDesktop;
 import com.jfixby.scarabei.api.file.FilesList;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
@@ -13,7 +13,7 @@ import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 public class IndexAll {
 
     public static void main(String[] args) throws IOException {
-	DesktopSetup.deploy();
+	ScarabeiDesktop.deploy();
 	IndexedCompressor.installComponent(new RedIndexedCompressor());
 
 	File home = LocalFileSystem.ApplicationHome();

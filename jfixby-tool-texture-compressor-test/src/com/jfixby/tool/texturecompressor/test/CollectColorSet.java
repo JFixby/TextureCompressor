@@ -6,7 +6,7 @@ import java.io.IOException;
 import com.jfixby.scarabei.api.color.Color;
 import com.jfixby.scarabei.api.color.ColorSet;
 import com.jfixby.scarabei.api.color.Colors;
-import com.jfixby.scarabei.api.desktop.DesktopSetup;
+import com.jfixby.scarabei.api.desktop.ScarabeiDesktop;
 import com.jfixby.scarabei.api.desktop.ImageAWT;
 import com.jfixby.scarabei.api.file.File;
 import com.jfixby.scarabei.api.file.LocalFileSystem;
@@ -20,7 +20,7 @@ import com.jfixby.tools.texturepacker.red.indexed.RedIndexedCompressor;
 public class CollectColorSet {
 
 	public static void main (final String[] args) throws IOException {
-		DesktopSetup.deploy();
+		ScarabeiDesktop.deploy();
 		IndexedCompressor.installComponent(new RedIndexedCompressor());
 
 		final File home = LocalFileSystem.ApplicationHome();
