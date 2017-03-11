@@ -10,12 +10,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/scarabei-red-gdx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-shader-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-api-shader"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rana-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-packer-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-packer-gdx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rana-asset-red"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-api-fokker"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/red-triplane-fokker-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gdx-backend-lwjgl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jfixby-tool-texture-compressor-red"/>
