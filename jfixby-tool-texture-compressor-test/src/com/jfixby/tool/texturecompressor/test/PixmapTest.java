@@ -12,10 +12,11 @@ public class PixmapTest {
 	public static void main (final String[] args) {
 
 		GdxNativesLoader.load();
-		Pixmap.setBlending(Pixmap.Blending.None);
+
 		final float W = 400;
 		final float H = 400;
 		final Pixmap pixmap = new Pixmap((int)W, (int)H, Format.RGBA8888);
+		pixmap.setBlending(Pixmap.Blending.None);
 		pixmap.setColor(0x0000FF00);// clear background, Alpha == 0
 		pixmap.fill();
 		for (int x = 0; x < W; x++) {
